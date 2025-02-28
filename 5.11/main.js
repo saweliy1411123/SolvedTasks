@@ -76,3 +76,25 @@ function getSecondsToday() {
 
 console.log(getSecondsToday());
 // alert(getSecondsToday())
+
+function formatDate(date) {
+  let datas = new Date() - date;
+  if (datas < 1000) {
+    return "Прямо сейчас";
+  }
+  let sec = Math.floor(datas / 1000);
+  if (sec < 60) {
+    return sec + " секунд назад";
+  }
+  let hour = Math.floor(sec / 60);
+  if (hour < 60) {
+    return hour + " минут назад";
+  }
+  let dat = date;
+  let day = dat.getDate() < 10 ? "0" + dat.getDate() : dat.getDate();
+  let month =
+    dat.getMonth() < 10 ? "0" + +(dat.getMonth() + 1) : dat.getMonth();
+  return `${day}.${month}.${dat.getFullYear()}, ${dat.getHours()}:${dat.getMinutes()}`;
+}
+
+console.log(formatDate(new Date(new Date() - 86400 * 1000)));
