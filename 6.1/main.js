@@ -42,3 +42,49 @@ function fib(n) {
   }
 }
 console.log(fib(3));
+
+let list = {
+  value: 1,
+  next: {
+    value: 2,
+    next: {
+      value: 3,
+      next: {
+        value: 4,
+        next: null,
+      },
+    },
+  },
+};
+
+function printlist(list) {
+  // console.log(value);
+  // if (list.next) {
+  //   printlist(list.next);
+  // }
+  while (list) {
+    console.log(list.value);
+    list = list.next;
+  }
+}
+
+printlist(list);
+
+function printlist(list) {
+  // console.log(value);
+  // if (list.next) {
+  //   printlist(list.next);
+  // }
+
+  let s = [];
+  while (list) {
+    s.push(list.value);
+    list = list.next;
+  }
+  s = s.reverse();
+  for (let j of s) {
+    console.log(j);
+  }
+}
+
+printlist(list);
