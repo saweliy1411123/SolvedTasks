@@ -15,3 +15,17 @@ counter.set(21);
 counter.decrease();
 counter();
 counter();
+
+function sum(a) {
+  let s = a;
+  function f(b) {
+    s += b;
+    return f;
+  }
+  f.toString = function () {
+    return s;
+  };
+  return f;
+}
+
+console.log(+sum(1)(2)(5));
