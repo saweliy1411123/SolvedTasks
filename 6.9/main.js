@@ -51,7 +51,6 @@ function debounce(func, ms) {
     timeout = setTimeout(() => func.apply(this, arguments), ms);
   };
 }
-<<<<<<< HEAD
 
 function throttle(f, ms) {
   let isThrotted = false;
@@ -75,5 +74,3 @@ let f1000 = throttle(f, 1000);
 f1000(1); // показывает 1
 f1000(2); // (ограничение, 1000 мс ещё нет)
 f1000(3); // (ограничение, 1000 мс ещё нет)
-=======
->>>>>>> b5a9d280223a1ae0b992c1919b2bbf2fcd44236b
