@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="display: grid; grid-template-columns: 1fr;">
+        <div id="data" style="display: flex; justify-content: center; font-size: 90px; margin-top: 20px;">
+            <span id="hours" style="color: red;">00</span>: 
+            <span id="minutes" style="color: green;">00</span>: 
+            <span id="seconds" style="color: blue;">00</span>
+        </div>
+        <div style="display: flex; justify-content: center; gap: 10px;">
+            <button id='start' style="font-size: 30px;">запустить</button>
+            <button id='stop' style="font-size: 30px;">остановить</button>
+        </div>
+        
+    </div>
+
+    <script>
+        let v;
+        function update(){
+            let d = new Date();
+            let hours = d.getHours();
+            let minutes = d.getMinutes();
+            let seconds = d.getSeconds();
+
+            // Форматируем время, добавляем ноль перед числом, если меньше 10
+            if (hours < 10) hours = '0' + hours;
+            if (minutes < 10) minutes = '0' + minutes;
+            if (seconds < 10) seconds = '0' + seconds;
+
+            // Обновляем значения в элементах
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+        function start(){
+            if (!v){
+                v = setInterval(update, 1000);
+            }
+        }
+        
+        function stop(){
+            clearInterval(v);
+            v = null;
+        }
+
+        document.getElementById('start').addEventListener('click', start);
+        document.getElementById('stop').addEventListener('click', stop);
+        start();
+    </script>
+</body>
+</html>
