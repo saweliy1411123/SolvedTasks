@@ -6,8 +6,53 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="calendar"></div>
+    <table>
+
+    </table>
+
     <script>
+        function createCalendar(year, month){
+            let test = document.getElementsByTagName('table')[0];
+            const M = ['пн', 'вт',  'ср',  'чт',  'пт',  'сб',  'вс']
+
+            let tBody = document.createElement('tbody');
+            let header = document.createElement('tr')
+            for (let i = 0; i < 7; i++) {
+                let headerTd =  document.createElement('td');
+                headerTd.innerText = M[i];
+                header.appendChild(headerTd)
+            }
+
+            tBody.appendChild(header);
+            test.appendChild(tBody);
+            let k = 1;
+            const currentDate = new Date(year, month-1, 0);
+            let m = currentDate.getDay();
+            const currentDate2 = new Date(year, month, 0);
+            let s = currentDate2.getDate();
+            if (m==0) m=7;
+            let v = currentDate.getMonth();
+            for (let i = 0; i < 6; i++) {
+                let body = document.createElement('tr');
+                for (let j = 0; j < 7; j++) {
+                    let bodyTH =  document.createElement('td');
+                    if (i === 0 && j < m) {
+                        bodyTH.innerText = '';
+                    } else {
+                        bodyTH.innerText = k;
+                        k += 1;
+                    }
+                    if (k>s+1){
+                        break;
+                    }
+                    body.appendChild(bodyTH);
+                }
+                tBody.appendChild(body);
+            }
+
+        }
+        
+        createCalendar(2000, 10)
 
     </script>
 </body>

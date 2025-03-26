@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+  <div class="menu">
+    <p id="sas">▶ ▼ Сладости (нажми меня)!<p>
+    <ul>
+      <li>Пирожное</li>
+      <li>Пончик</li>
+      <li>Мёд</li>
+    </ul>
+  </div>
+  <script>
+    let s = document.getElementsByClassName('menu')[0];
+    let b = s.firstElementChild;
+    let ul = document.getElementsByTagName('ul')[0];
+    function viv() {
+    // Переключаем отображение списка
+      ul.style.display = (ul.style.display === 'none') ? 'block' : 'none';
+    }
+
+    sas.addEventListener("click", viv);
+  </script>
+</body>
+</html>
