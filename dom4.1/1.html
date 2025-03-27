@@ -1,0 +1,23 @@
+<!doctype html>
+<body>
+<select id="genres">
+  <option value="rock">Рок</option>
+  <option value="blues" selected>Блюз</option>
+</select>
+
+<script>
+  // Добавьте пункт: <option value="classic">Классика</option>.
+  let opt = document.getElementsByTagName('option');
+  for (let option of opt){
+    if (option.selected){
+      // alert(option.value);
+      // alert(option.textContent);
+    }
+  }
+  let options = document.createElement('option');
+  options.value = 'classic';
+  options.textContent = 'Классика';
+  options.selected = true;
+  genres.append(options);
+</script>
+</body>

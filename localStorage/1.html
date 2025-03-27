@@ -1,0 +1,16 @@
+<!doctype html>
+<textarea style="width:200px; height: 60px;" id="area"></textarea>
+<script>
+  let textarea = document.getElementsByTagName('textarea')[0];
+  let button = document.createElement('button');
+  button.textContent = 'очистить';
+  button.onclick = function(event){
+    textarea.value = '';
+    localStorage.removeItem('save');
+  }
+  textarea.oninput = function(){
+    localStorage.setItem('save', textarea.value);
+  }
+  textarea.value = localStorage.getItem('save');
+  document.body.append(button);
+</script>

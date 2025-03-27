@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<style>
+    html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#prompt-form {
+  display: inline-block;
+  padding: 5px 5px 5px 70px;
+  width: 200px;
+  border: 1px solid black;
+  background: white url(https://en.js.cx/clipart/prompt.png) no-repeat left 5px;
+  vertical-align: middle;
+}
+
+#prompt-form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+#prompt-form-container:before {
+  display: inline-block;
+  height: 100%;
+  content: '';
+  vertical-align: middle;
+}
+
+#prompt-form input[name="text"] {
+  display: block;
+  margin: 5px;
+  width: 180px;
+}
+</style>
+
+  <div id="prompt-form-container">
+    <form id="prompt-form">
+      <div id="prompt-message">Введите что-нибудь...
+        <br>Пожалуйста..</div>
+      <input name="text" type="text">
+      <input type="submit" value="Ok">
+      <input type="button" name="cancel" value="Отмена">
+    </form>
+  </div>
+<script>
+  let alerts = document.getElementById('prompt-form-container');
+  alerts.hidden = true;
+  let message = document.createElement('p');
+  let button = document.createElement('button');
+  button.innerHTML = 'Кликните чтобы увидеть форму';
+  message.innerHTML = 'Кликните на кнопку ниже';
+  document.body.append(message);
+  document.body.append(button);
+  button.onclick = function(event){
+    alerts.hidden = false;
+  }
+  let form = document.getElementById('prompt-form');
+  form.querySelector('input[type="submit"]').onclick = function(event) {
+    event.preventDefault(); 
+    alert(`Вы ввели: ${form.elements['text'].value}`);
+    form.elements['text'].value = '';
+    alerts.hidden = true;
+  };
+  form.querySelector('input[type="button"]').onclick = function(event){
+    event.preventDefault();
+    alert(`Вы ввели: null`);
+    form.elements['text'].value = '';
+    alerts.hidden = true;
+  }
+
+
+</script>
+
+</body>
+
+</html>
