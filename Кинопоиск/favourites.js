@@ -22,7 +22,7 @@ function load() {
               <p id="cartdata" style="color: gray">${obj.date}</p>
           </div>
           <button class="star-btn" style="width: 30px; height: 30px;">
-            <img class="star" style="width: 30px; height: 30px;" src="/img/gold_star.svg" alt="star">
+            <img class="star" style="width: 30px; height: 30px;" src="img/gold_star.svg" alt="star">
           </button>
         </div>
       `;

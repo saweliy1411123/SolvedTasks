@@ -76,8 +76,8 @@ ok.onclick = function () {
   let name = document.querySelector("input[type=text]");
   let fileInput = document.querySelector("input[type=file]");
   let date = document.querySelector("input[type=date]");
-  let star = "/img/star.svg";
-  let gal = "/img/square.svg";
+  let star = "img/star.svg";
+  let gal = "img/square.svg";
 
   if (fileInput.files.length === 0) {
     alert("Выберите изображение!");
@@ -108,9 +108,9 @@ ok.onclick = function () {
             </p>
             <p id="cartdata" style="color: gray">${date.value}</p>
         </div>
-        <button class="redact"><img src="/img/pencil.svg" alt=""></button>
+        <button class="redact"><img src="img/pencil.svg" alt=""></button>
         <button class="cross" style="width: 30px; height: 30px; border: none; background: none; cursor: pointer;">
-            <img src="/img/cross.svg" style="width: 20px;">
+            <img src="img/cross.svg" style="width: 20px;">
         </button>
         <button style="width: 30px; height: 30px;"><img class="star" style="width: 30px; height: 30px;" src="${star}" alt=""></button>
         <button style="width: 30px; height: 30px;"><img class="square" style="width: 30px; height: 30px;" src="${gal}" alt=""></button>
@@ -229,8 +229,8 @@ function load() {
   if (Array.isArray(objects)) {
     objects.forEach((obj) => {
       let div = document.createElement("div");
-      let starSrc = obj.star ? "/img/gold_star.svg" : "/img/star.svg";
-      let gals = obj.gal ? "/img/gal.svg" : "/img/square.svg";
+      let starSrc = obj.star ? "img/gold_star.svg" : "img/star.svg";
+      let gals = obj.gal ? "img/gal.svg" : "img/square.svg";
       console.log("Loaded image URL:", obj.image);
       div.innerHTML = `
         <div class="cart" data-id="${obj.id}" style="padding-inline: 10px;"> 
@@ -247,9 +247,9 @@ function load() {
               </p>
               <p id="cartdata" style="color: gray">${obj.date}</p>
           </div>
-          <button class="redact"><img src="/img/pencil.svg" alt=""></button>
+          <button class="redact"><img src="img/pencil.svg" alt=""></button>
           <button class="cross" style="width: 30px; height: 30px; border: none; background: none; cursor: pointer;">
-              <img src="/img/cross.svg" style="width: 20px;">
+              <img src="img/cross.svg" style="width: 20px;">
           </button>
           <button style="width: 30px; height: 30px;"><img class="star" style="width: 30px; height: 30px;" src="${starSrc}" alt=""></button>
           <button style="width: 30px; height: 30px;"><img class="square" style="width: 30px; height: 30px;" src="${gals}" alt=""></button>
@@ -337,7 +337,7 @@ document.body.addEventListener("click", function (event) {
 
     if (obj) {
       obj.star = !obj.star; // Переключаем состояние true/false
-      star.src = obj.star ? "/img/gold_star.svg" : "/img/star.svg";
+      star.src = obj.star ? "img/gold_star.svg" : "img/star.svg";
       localStorage.setItem("object", JSON.stringify(objects)); // Сохраняем
     }
   }
@@ -354,7 +354,7 @@ document.body.addEventListener("click", function (event) {
 
     if (obj) {
       obj.gal = !obj.gal; // Переключаем состояние true/false
-      gal.src = obj.gal ? "/img/gal.svg" : "/img/square.svg";
+      gal.src = obj.gal ? "img/gal.svg" : "img/square.svg";
       localStorage.setItem("object", JSON.stringify(objects)); // Сохраняем
     }
   }
