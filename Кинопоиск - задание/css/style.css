@@ -91,7 +91,7 @@ legend {
 
 @font-face {
     font-family: 'kinopoisk';
-    src: url('fonts/graphiklcweb_medium.ttf') format('truetype');
+    src: url('graphiklcweb_medium.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
