@@ -10,7 +10,7 @@
 
 body{
     font-family: 'kinopoisk';
-    
+    min-height: 1000px;
 }
 
 .myGrid{
@@ -107,3 +107,38 @@ body{
     padding: 10px;
     border-radius: 10px;
 }
+
+
+.buttonSwitch{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 20%;
+    margin-inline: 40%;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+
+
+input[type="date"] {
+    position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button {
+     z-index: 1;
+ }
+	
+

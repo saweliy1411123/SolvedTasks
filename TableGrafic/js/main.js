@@ -10,6 +10,14 @@ const gridOptions_1 = {
     gridCheckFirst = true;
     check();
   },
+  onSelectionChanged: () => {
+    let selectedRowsFirst = gridOptions_1.api.getSelectedRows().length;
+    if (selectedRowsFirst === 1) {
+      redButtonFirst.disabled = false;
+    } else {
+      redButtonFirst.disabled = true;
+    }
+  },
 };
 
 const gridOptions_2 = {
@@ -21,12 +29,26 @@ const gridOptions_2 = {
     gridCheckSecond = true;
     check();
   },
+  onSelectionChanged: () => {
+    let selectedRowsSecond = gridOptions_2.api.getSelectedRows().length;
+    if (selectedRowsSecond === 1) {
+      redButtonSecond.disabled = false;
+    } else {
+      redButtonSecond.disabled = true;
+    }
+  },
 };
 
 const myGridfirst = document.querySelector("#myGridfirst");
 const myGridsecond = document.querySelector("#myGridsecond");
 agGrid.createGrid(myGridfirst, gridOptions_1);
 agGrid.createGrid(myGridsecond, gridOptions_2);
+redButtonFirst.disabled = true;
+redButtonSecond.disabled = true;
+if (localStorage.length === 0) {
+  localStorage.setItem("tableIncome", JSON.stringify([]));
+  localStorage.setItem("tableExpenses", JSON.stringify([]));
+}
 
 function check() {
   if (gridCheckFirst && gridCheckSecond) {
@@ -51,6 +73,17 @@ let dateIncome = document.querySelector(".dateIncome");
 let textExpenses = document.querySelector(".textExpenses");
 let numberExpenses = document.querySelector(".numberExpenses");
 let dateExpenses = document.querySelector(".dateExpenses");
+
+function addInfoFirst() {
+  addIncomeCategory.value = "";
+  addIncomeSum.value = "";
+  addIncomeDate.value = "";
+}
+function addInfoSecond() {
+  addExpenseCategory.value = "";
+  addExpenseSum.value = "";
+  addExpenseDate.value = "";
+}
 
 function addOkFirst() {
   const new_Row = {
@@ -141,7 +174,7 @@ function redOkSecond() {
     row.sum = editExpenseSum.value;
     row.data = new Date(editExpenseDate.value).toLocaleDateString("ru-RU");
   });
-  gridOptions_1.api.applyTransaction({ update: selectedData1 });
+  gridOptions_2.api.applyTransaction({ update: selectedData2 });
   const allData = [];
   gridOptions_2.api.forEachNode((node) => allData.push(node.data));
   localStorage.setItem("tableExpenses", JSON.stringify(allData));
@@ -175,3 +208,19 @@ function deleteExpenses() {
 }
 
 // localStorage.clear();
+
+let firstPart = document.querySelector(".firstPart");
+let secondPart = document.querySelector(".secondPart");
+secondPart.style.display = "none";
+function buttonSwitch() {
+  if (
+    firstPart.style.display == "none" &&
+    secondPart.style.display == "block"
+  ) {
+    firstPart.style.display = "block";
+    secondPart.style.display = "none";
+  } else {
+    firstPart.style.display = "none";
+    secondPart.style.display = "block";
+  }
+}
