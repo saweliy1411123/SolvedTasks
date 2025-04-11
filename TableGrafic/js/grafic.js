@@ -54,9 +54,6 @@ function checkDateFirst() {
         nameElementsFirst.push(tableFirst[i].category);
         sumElementsFirst.push(tableFirst[i].sum);
       }
-    }
-
-    for (let i = 0; i < tableSecond.length; i++) {
       let targetSecond = new Date(dateElementSecond[i]);
       if (targetSecond >= start && targetSecond <= end) {
         nameElementsSecond.push(tableSecond[i].category);
