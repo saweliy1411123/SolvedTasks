@@ -219,6 +219,7 @@ function buttonSwitch() {
   ) {
     firstPart.style.display = "block";
     secondPart.style.display = "none";
+    location.reload();
   } else {
     firstPart.style.display = "none";
     secondPart.style.display = "block";
