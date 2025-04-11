@@ -48,20 +48,19 @@ function checkDateFirst() {
 
     let start = new Date(dateRangeFirst.value);
     let end = new Date(dateRangeSecond.value);
-    for (let i = 0; i < Math.max(tableFirst.length, tableSecond.length); i++) {
+    for (let i = 0; i < tableFirst.length; i++) {
       let targetFirst = new Date(dateElementFirst[i]);
-      let targetSecond = new Date(dateElementSecond[i]);
       if (targetFirst >= start && targetFirst <= end) {
         nameElementsFirst.push(tableFirst[i].category);
         sumElementsFirst.push(tableFirst[i].sum);
-      } else {
-        console.log("Таких нет в первой табличке");
       }
+    }
+
+    for (let i = 0; i < tableSecond.length; i++) {
+      let targetSecond = new Date(dateElementSecond[i]);
       if (targetSecond >= start && targetSecond <= end) {
         nameElementsSecond.push(tableSecond[i].category);
         sumElementsSecond.push(tableSecond[i].sum);
-      } else {
-        console.log("Таких нет во второй табличке");
       }
     }
     trueFirst();
