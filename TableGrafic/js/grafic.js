@@ -125,6 +125,7 @@ function checkDateSecond() {
         sums += +tableFirst[i].sum;
       }
     }
+    console.log(sums);
     trueSecond();
   }
 }
