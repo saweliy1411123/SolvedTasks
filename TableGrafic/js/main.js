@@ -45,6 +45,7 @@ agGrid.createGrid(myGridfirst, gridOptions_1);
 agGrid.createGrid(myGridsecond, gridOptions_2);
 redButtonFirst.disabled = true;
 redButtonSecond.disabled = true;
+
 if (localStorage.length === 0) {
   localStorage.setItem("tableIncome", JSON.stringify([]));
   localStorage.setItem("tableExpenses", JSON.stringify([]));

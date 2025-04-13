@@ -6,7 +6,7 @@ let nameElementsSecond = [];
 let sumElementsSecond = [];
 let dateElementFirst = [];
 let dateElementSecond = [];
-
+let sum = 0;
 let dateRangeFirst = document.querySelectorAll(".dateElements")[0];
 let dateRangeSecond = document.querySelectorAll(".dateElements")[1];
 let dateRangeThird = document.querySelectorAll(".dateElements")[2];
@@ -110,7 +110,7 @@ function checkDateSecond() {
   if (date3 && date4) {
     nameElementsFirst = [];
     sumElementsFirst = [];
-    let sums = 0;
+    sums = 0;
     let tableFirst = JSON.parse(localStorage.getItem("tableIncome")) || [];
     for (let i = 0; i < tableFirst.length; i++) {
       dateElementFirst.push(tableFirst[i].data);
