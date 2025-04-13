@@ -92,7 +92,7 @@ function addOkFirst() {
     )}`,
     category: addIncomeCategory.value,
     sum: addIncomeSum.value,
-    data: new Date(addIncomeDate.value).toLocaleDateString("ru-RU"),
+    data: formatDate(addIncomeDate.value),
   };
   gridOptions_1.api.applyTransaction({
     add: [new_Row],
@@ -113,7 +113,7 @@ function addOkSecond() {
     )}`,
     category: addExpenseCategory.value,
     sum: addExpenseSum.value,
-    data: new Date(addExpenseDate.value).toLocaleDateString("ru-RU"),
+    data: formatDate(addExpenseDate.value),
   };
   gridOptions_2.api.applyTransaction({
     add: [new_Row],
@@ -145,21 +145,21 @@ function redInfoFirst() {
   const selectedData1 = gridOptions_1.api.getSelectedRows();
   editIncomeCategory.value = selectedData1[0].category;
   editIncomeSum.value = selectedData1[0].sum;
-  editIncomeDate.value = formatDate(selectedData1[0].data);
+  editIncomeDate.value = selectedData1[0].data;
   console.log(editIncomeDate.value);
 }
 function redInfoSecond() {
   const selectedData2 = gridOptions_2.api.getSelectedRows();
   editExpenseCategory.value = selectedData2[0].category;
   editExpenseSum.value = selectedData2[0].sum;
-  editExpenseDate.value = formatDate(selectedData2[0].data);
+  editExpenseDate.value = selectedData2[0].data;
 }
 function redOkFirst() {
   const selectedData1 = gridOptions_1.api.getSelectedRows();
   selectedData1.forEach((row) => {
     row.category = editIncomeCategory.value;
     row.sum = editIncomeSum.value;
-    row.data = new Date(editIncomeDate.value).toLocaleDateString("ru-RU");
+    row.data = formatDate(editIncomeDate.value);
   });
   gridOptions_1.api.applyTransaction({ update: selectedData1 });
   const allData = [];
@@ -172,7 +172,7 @@ function redOkSecond() {
   selectedData2.forEach((row) => {
     row.category = editExpenseCategory.value;
     row.sum = editExpenseSum.value;
-    row.data = new Date(editExpenseDate.value).toLocaleDateString("ru-RU");
+    row.data = formatDate(editExpenseDate.value);
   });
   gridOptions_2.api.applyTransaction({ update: selectedData2 });
   const allData = [];
