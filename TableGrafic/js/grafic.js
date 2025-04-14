@@ -118,6 +118,7 @@ function checkDateSecond() {
   if (date3 && date4) {
     nameElementsFirst = [];
     sumElementsFirst = [];
+    dateElementFirst = [];
     sums = 0;
     let tableFirst = JSON.parse(localStorage.getItem("tableIncome")) || [];
     for (let i = 0; i < tableFirst.length; i++) {
