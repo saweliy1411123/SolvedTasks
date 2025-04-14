@@ -15,109 +15,28 @@ body{
 
 .myGrid{
     min-height: 300px;
-    width: 90%;
     margin-inline: 5%;
 }
 
-.settings_myGrid{
-    display: grid;
+.gridColumns{
     grid-template-columns: 1fr 1fr;
 }
 
-.tittle_name{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-
-.name{
-    display: flex;
-    justify-content: center;
-    font-size: 40px;
-    font-weight: bold;
-}
-.buttons{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.modal-header{
-    margin-bottom: 30px;
-}
-.form-fieldset-custom {
-    position: relative;
-    border: 2px solid black;
-    border-radius: 10px;
-    padding: 1.2rem 1rem 0.75rem;
-    margin-bottom: 1.5rem;
-    background: #fff;
-}
-
-.form-fieldset-custom legend {
+.formLegend{
     font-size: 15px;
     padding: 0 0.5rem;
-    position: absolute;
-    width: auto;
     top: -0.7rem;
     left: 1rem;
-    background: #fff;
-    font-family: 'kinopoisk';
 }
 
-.form-fieldset-custom input {
-    border: none;
-    outline: none;
-    width: 100%;
-    background: transparent;
-    font-size: 1rem;
-}
 
-.graficName{
-    display: flex;
-    justify-content: center;
-    margin-top: 100px;
-    margin-bottom: 20px;
-}
 
-.bothGrafics{
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 100px;
-}
 .grafic{
-    display: flex;
-    justify-content: center;
     width: 600px;
     height:400px; 
 }
 
-.date{
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 30px;
-    margin-top: 30px;
-}
 
-.dateElements{
-    margin-inline: 10px;
-    border: 2px solid black;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-
-.buttonSwitch{
-    margin-top: 40px;
-    margin-bottom: 40px;
-    width: 20%;
-    margin-inline: 40%;
-    padding: 10px;
-    border: 2px solid black;
-    border-radius: 20px;
-}
 
 
 input[type="date"] {
@@ -141,6 +60,3 @@ input[type="date"]::-webkit-clear-button {
      z-index: 1;
  }
 	
-.forButtons{
-    justify-content: center;
-}

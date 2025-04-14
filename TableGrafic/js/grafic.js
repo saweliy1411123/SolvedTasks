@@ -1,6 +1,8 @@
 let myChartFirst = echarts.init(document.getElementById("mainFirst"));
 let myChartSecond = echarts.init(document.getElementById("mainSecond"));
 let nameElementsFirst = [];
+let nameFirst = [];
+let nameSecond = [];
 let sumElementsFirst = [];
 let nameElementsSecond = [];
 let sumElementsSecond = [];
@@ -62,6 +64,7 @@ function checkDateFirst() {
         formatDate(tableFirst[i].data),
         1,
         tableFirst[i].sum,
+        tableFirst[i].category,
       ]);
     }
     for (let i = 0; i < tableSecond.length; i++) {
@@ -69,6 +72,7 @@ function checkDateFirst() {
         formatDate(tableSecond[i].data),
         2,
         tableSecond[i].sum,
+        tableSecond[i].category,
       ]);
     }
     dateElementFirst.sort();
@@ -89,23 +93,27 @@ function checkDateFirst() {
         nameElementsFirst.push(rangeDataElement[i][0]);
         sumElementsFirst.push(rangeDataElement[i][2]);
         sumElementsSecond.push(rangeDataElement[i + 1][2]);
+        nameFirst.push(rangeDataElement[i][3]);
+        nameSecond.push(rangeDataElement[i + 1][3]);
+        console.log(nameFirst);
+        console.log(nameSecond);
         i += 1;
       } else {
-        console.log(
-          "Номер таблицы",
-          rangeDataElement[i][1],
-          "",
-          rangeDataElement[i][0],
-          "",
-          rangeDataElement[i][2]
-        );
         nameElementsFirst.push(rangeDataElement[i][0]);
         if (Number(rangeDataElement[i][1]) == 2) {
           sumElementsFirst.push("");
           sumElementsSecond.push(rangeDataElement[i][2]);
+          nameSecond.push(rangeDataElement[i + 1][3]);
+          nameFirst.push("");
+          console.log(nameFirst);
+          console.log(nameSecond);
         } else {
           sumElementsFirst.push(rangeDataElement[i][2]);
           sumElementsSecond.push("");
+          nameFirst.push(rangeDataElement[i][3]);
+          nameSecond.push("");
+          console.log(nameFirst);
+          console.log(nameSecond);
         }
       }
     }
@@ -144,6 +152,9 @@ function trueFirst() {
     tooltip: {
       trigger: "axis",
     },
+    legend: {
+      orient: "horizontal",
+    },
     xAxis: {
       data: nameElementsFirst,
     },
@@ -151,10 +162,12 @@ function trueFirst() {
     series: [
       {
         type: "bar",
+        name: "Доход",
         data: sumElementsFirst,
       },
       {
         type: "bar",
+        name: "Расход",
         data: sumElementsSecond,
       },
     ],
@@ -164,6 +177,16 @@ function trueFirst() {
 
 function trueSecond() {
   optionSecond = {
+    tooltip: {
+      trigger: "item",
+      formatter: "{b}: {c} руб. ({d}%)",
+    },
+    legend: {
+      orient: "horizontal",
+      x: "center",
+      top: "bottom",
+      data: [],
+    },
     title: {
       text: `${sums} руб.`,
       left: "center",
@@ -174,6 +197,10 @@ function trueSecond() {
         type: "pie",
         data: [],
         radius: ["50%", "70%"],
+        label: {
+          show: true,
+          formatter: "{c} руб.",
+        },
       },
     ],
   };
@@ -182,6 +209,7 @@ function trueSecond() {
       value: sumElementsFirst[i],
       name: nameElementsFirst[i],
     });
+    optionSecond.legend.data.push(nameElementsFirst[i]);
   }
 
   myChartSecond.setOption(optionSecond);

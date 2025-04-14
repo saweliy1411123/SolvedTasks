@@ -1,6 +1,19 @@
 let gridApi;
 let gridCheckFirst = false;
 let gridCheckSecond = false;
+let textIncome = document.querySelector(".textIncome");
+let numberIncome = document.querySelector(".numberIncome");
+let dateIncome = document.querySelector(".dateIncome");
+let textExpenses = document.querySelector(".textExpenses");
+let numberExpenses = document.querySelector(".numberExpenses");
+let dateExpenses = document.querySelector(".dateExpenses");
+redIncome.disabled = true;
+redExpenses.disabled = true;
+let addIncomeText = "Добавление доходов";
+let addExpensesText = "Добавление расходов";
+let redIncomeText = "Редактирование доходов";
+let redExpensesText = "Редактирование расходов";
+
 const gridOptions_1 = {
   rowData: [],
   columnDefs: [{ field: "category" }, { field: "sum" }, { field: "data" }],
@@ -43,8 +56,6 @@ const myGridfirst = document.querySelector("#myGridfirst");
 const myGridsecond = document.querySelector("#myGridsecond");
 agGrid.createGrid(myGridfirst, gridOptions_1);
 agGrid.createGrid(myGridsecond, gridOptions_2);
-redIncome.disabled = true;
-redExpenses.disabled = true;
 
 if (localStorage.length === 0) {
   localStorage.setItem("tableIncome", JSON.stringify([]));
@@ -68,21 +79,14 @@ function load() {
 }
 console.log(localStorage);
 
-let textIncome = document.querySelector(".textIncome");
-let numberIncome = document.querySelector(".numberIncome");
-let dateIncome = document.querySelector(".dateIncome");
-let textExpenses = document.querySelector(".textExpenses");
-let numberExpenses = document.querySelector(".numberExpenses");
-let dateExpenses = document.querySelector(".dateExpenses");
-
 function addInfoFirst() {
-  addIncomeModalLabel.textContent = "Добавление дохода";
+  addIncomeModalLabel.textContent = addIncomeText;
   addIncomeCategory.value = "";
   addIncomeSum.value = "";
   addIncomeDate.value = "";
 }
 function addInfoSecond() {
-  addIncomeModalLabel.textContent = "Добавление расхода";
+  addIncomeModalLabel.textContent = addExpensesText;
   addIncomeCategory.value = "";
   addIncomeSum.value = "";
   addIncomeDate.value = "";
@@ -90,7 +94,7 @@ function addInfoSecond() {
 
 function addOk() {
   switch (true) {
-    case addIncomeModalLabel.textContent == "Добавление дохода":
+    case addIncomeModalLabel.textContent == addIncomeText:
       const newRowIncome = {
         id: `${Math.round(Math.random(1) * 1000)}_${Math.round(
           Math.random(1) * 1000
@@ -110,7 +114,7 @@ function addOk() {
       addIncomeDate.value = "";
       console.log(localStorage);
       break;
-    case addIncomeModalLabel.textContent == "Добавление расхода":
+    case addIncomeModalLabel.textContent == addExpensesText:
       const newRowExpenses = {
         id: `${Math.round(Math.random(1) * 1000)}_${Math.round(
           Math.random(1) * 1000
@@ -135,7 +139,7 @@ function addOk() {
       addIncomeDate.value = "";
       console.log(localStorage);
       break;
-    case addIncomeModalLabel.textContent == "Редактирование дохода":
+    case addIncomeModalLabel.textContent == redIncomeText:
       const selectedData1 = gridOptions_1.api.getSelectedRows();
       let allDataIncome = [];
       selectedData1.forEach((row) => {
@@ -147,7 +151,7 @@ function addOk() {
       gridOptions_1.api.forEachNode((node) => allDataIncome.push(node.data));
       localStorage.setItem("tableIncome", JSON.stringify(allDataIncome));
       break;
-    case addIncomeModalLabel.textContent == "Редактирование расхода":
+    case addIncomeModalLabel.textContent == redExpensesText:
       const selectedData2 = gridOptions_2.api.getSelectedRows();
       let allDataExpenses = [];
       selectedData2.forEach((row) => {
@@ -177,7 +181,7 @@ function formatDate(date) {
 }
 
 function redInfoFirst() {
-  addIncomeModalLabel.textContent = "Редактирование дохода";
+  addIncomeModalLabel.textContent = redIncomeText;
   const selectedData1 = gridOptions_1.api.getSelectedRows();
   addIncomeCategory.value = selectedData1[0].category;
   addIncomeSum.value = selectedData1[0].sum;
@@ -185,7 +189,7 @@ function redInfoFirst() {
 }
 function redInfoSecond() {
   const selectedData2 = gridOptions_2.api.getSelectedRows();
-  addIncomeModalLabel.textContent = "Редактирование расхода";
+  addIncomeModalLabel.textContent = redExpensesText;
   addIncomeCategory.value = selectedData2[0].category;
   addIncomeSum.value = selectedData2[0].sum;
   addIncomeDate.value = selectedData2[0].data;
@@ -216,8 +220,6 @@ function deleteExpenses() {
 
   console.log(localStorage);
 }
-
-// localStorage.clear();
 
 let firstPart = document.querySelector(".firstPart");
 let secondPart = document.querySelector(".secondPart");
