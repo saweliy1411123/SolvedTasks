@@ -123,10 +123,10 @@ function checkDateSecond() {
     for (let i = 0; i < tableFirst.length; i++) {
       dateElementFirst.push(formatDate(tableFirst[i].data));
     }
-    let start = new Date(dateRangeThird.value);
-    let end = new Date(dateRangeFourth.value);
+    let start = formatDate(dateRangeThird.value);
+    let end = formatDate(dateRangeFourth.value);
     for (let i = 0; i < tableFirst.length; i++) {
-      let targetFirst = new Date(dateElementFirst[i]);
+      let targetFirst = formatDate(dateElementFirst[i]);
       if (targetFirst >= start && targetFirst <= end) {
         nameElementsFirst.push(tableFirst[i].category);
         sumElementsFirst.push(tableFirst[i].sum);
