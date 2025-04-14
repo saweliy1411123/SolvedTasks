@@ -58,10 +58,18 @@ function checkDateFirst() {
     sumElementsSecond = [];
 
     for (let i = 0; i < tableFirst.length; i++) {
-      dateElementFirst.push([tableFirst[i].data, 1, tableFirst[i].sum]);
+      dateElementFirst.push([
+        formatDate(tableFirst[i].data),
+        1,
+        tableFirst[i].sum,
+      ]);
     }
     for (let i = 0; i < tableSecond.length; i++) {
-      dateElementFirst.push([tableSecond[i].data, 2, tableSecond[i].sum]);
+      dateElementFirst.push([
+        formatDate(tableSecond[i].data),
+        2,
+        tableSecond[i].sum,
+      ]);
     }
     dateElementFirst.sort();
     let rangeDataElement = [];
@@ -113,7 +121,7 @@ function checkDateSecond() {
     sums = 0;
     let tableFirst = JSON.parse(localStorage.getItem("tableIncome")) || [];
     for (let i = 0; i < tableFirst.length; i++) {
-      dateElementFirst.push(tableFirst[i].data);
+      dateElementFirst.push(formatDate(tableFirst[i].data));
     }
     let start = new Date(dateRangeThird.value);
     let end = new Date(dateRangeFourth.value);
@@ -132,6 +140,9 @@ function checkDateSecond() {
 
 function trueFirst() {
   optionFirst = {
+    tooltip: {
+      trigger: "axis",
+    },
     xAxis: {
       data: nameElementsFirst,
     },

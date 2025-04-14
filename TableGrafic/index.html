@@ -13,18 +13,19 @@
       <p class="name">Расходы</p>
   </div>
   <div class="buttons">
-      <div class="d-flex gap-3 m-3" style="justify-content: center;">
+      <div class="d-flex gap-3 m-3 forButtons">
           <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="addInfoFirst()">Добавить</button>
-          <button id="redButtonFirst" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editIncomeModal" onclick="redInfoFirst()">Редактировать</button>
+          <!-- <button id="redButtonFirst" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editIncomeModal" onclick="redInfoFirst()">Редактировать</button> -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="redInfoFirst()" id="redIncome">Редактировать</button>
           <button class="btn btn-danger"  onclick="deleteIncome()">Удалить</button>
       </div>
-      <div class="d-flex gap-3 m-3" style="justify-content: center;">
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExpensesModal" onclick="addInfoSecond()">Добавить</button>
-          <button id="redButtonSecond" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editExpenseModal" onclick="redInfoSecond()">Редактировать</button>
+      <div class="d-flex gap-3 m-3 forButtons">
+          <!-- <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addExpensesModal" onclick="addInfoSecond()">Добавить</button>-->
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="addInfoSecond()">Добавить</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="redInfoSecond()" id="redExpenses">Редактировать</button>
           <button class="btn btn-danger" onclick="deleteExpenses()">Удалить</button>
       </div>
   </div>
-  <!-- Модальное окно - Добавление дохода -->
   <div class="modal fade" id="addIncomeModal" tabindex="-1" aria-labelledby="addIncomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
       <div class="modal-dialog">
           <div class="modal-content">
@@ -50,108 +51,11 @@
             </div>
             <div class="modal-footer">
               <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-              <button class="btn btn-primary" onclick="addOkFirst()" data-bs-dismiss="modal">Сохранить</button>
+              <button class="btn btn-primary" onclick="addOk()" data-bs-dismiss="modal">Сохранить</button>
             </div>
           </div>
       </div>
   </div>
-  
-  <!-- Модальное окно - Добавление расхода -->
-  <div class="modal fade" id="addExpensesModal" tabindex="-1" aria-labelledby="addExpensesModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-4" id="addExpensesModalLabel">Добавление расхода</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-              <form id="addExpenseForm">
-                <fieldset class="form-fieldset-custom">
-                  <legend>Категория</legend>
-                  <input type="text" class="form-control" id="addExpenseCategory" required>
-                </fieldset>
-                <fieldset class="form-fieldset-custom">
-                  <legend>Сумма</legend>
-                  <input type="number" class="form-control" id="addExpenseSum" required>
-                </fieldset>
-                <fieldset class="form-fieldset-custom">
-                  <legend>Дата</legend>
-                  <input type="date" class="form-control" id="addExpenseDate" required>
-                </fieldset>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-              <button class="btn btn-danger" onclick="addOkSecond()" data-bs-dismiss="modal">Сохранить</button>
-            </div>
-          </div>
-      </div>
-  </div>
-  
-  <!-- Модальное окно - Редактирование дохода -->
-  <div class="modal fade" id="editIncomeModal" tabindex="-1" aria-labelledby="editIncomeLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-4" id="editIncomeLabel">Редактирование дохода</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-          </div>
-          <div class="modal-body">
-            <form id="editIncomeForm">
-              <fieldset class="form-fieldset-custom">
-                <legend>Категория</legend>
-                <input type="text" class="form-control" id="editIncomeCategory" required>
-              </fieldset>
-              <fieldset class="form-fieldset-custom">
-                <legend>Сумма</legend>
-                <input type="number" class="form-control" id="editIncomeSum" required>
-              </fieldset>
-              <fieldset class="form-fieldset-custom">
-                <legend>Дата</legend>
-                <input type="date" class="form-control" id="editIncomeDate" required>
-              </fieldset>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button class="btn btn-primary" onclick="redOkFirst()" data-bs-dismiss="modal">Сохранить изменения</button>
-          </div>
-        </div>
-      </div>
-  </div>
-  
-  <!-- Модальное окно - Редактирование расхода -->
-  <div class="modal fade" id="editExpenseModal" tabindex="-1" aria-labelledby="editExpenseLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-4" id="editExpenseLabel">Редактирование расхода</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-          </div>
-          <div class="modal-body">
-            <form id="editExpenseForm">
-              <fieldset class="form-fieldset-custom">
-                <legend>Категория</legend>
-                <input type="text" class="form-control" id="editExpenseCategory" required>
-              </fieldset>
-              <fieldset class="form-fieldset-custom">
-                <legend>Сумма</legend>
-                <input type="number" class="form-control" id="editExpenseSum" required>
-              </fieldset>
-              <fieldset class="form-fieldset-custom">
-                <legend>Дата</legend>
-                <input type="date" class="form-control" id="editExpenseDate" required>
-              </fieldset>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button class="btn btn-danger" onclick="redOkSecond()" data-bs-dismiss="modal">Сохранить изменения</button>
-          </div>
-        </div>
-      </div>
-  </div>
-
   <div class="settings_myGrid">
       <div class="myGrid" id="myGridfirst"></div>
       <div class="myGrid" id="myGridsecond"></div>

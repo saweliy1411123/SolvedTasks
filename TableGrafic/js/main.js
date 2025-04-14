@@ -13,9 +13,9 @@ const gridOptions_1 = {
   onSelectionChanged: () => {
     let selectedRowsFirst = gridOptions_1.api.getSelectedRows().length;
     if (selectedRowsFirst === 1) {
-      redButtonFirst.disabled = false;
+      redIncome.disabled = false;
     } else {
-      redButtonFirst.disabled = true;
+      redIncome.disabled = true;
     }
   },
 };
@@ -32,9 +32,9 @@ const gridOptions_2 = {
   onSelectionChanged: () => {
     let selectedRowsSecond = gridOptions_2.api.getSelectedRows().length;
     if (selectedRowsSecond === 1) {
-      redButtonSecond.disabled = false;
+      redExpenses.disabled = false;
     } else {
-      redButtonSecond.disabled = true;
+      redExpenses.disabled = true;
     }
   },
 };
@@ -43,8 +43,8 @@ const myGridfirst = document.querySelector("#myGridfirst");
 const myGridsecond = document.querySelector("#myGridsecond");
 agGrid.createGrid(myGridfirst, gridOptions_1);
 agGrid.createGrid(myGridsecond, gridOptions_2);
-redButtonFirst.disabled = true;
-redButtonSecond.disabled = true;
+redIncome.disabled = true;
+redExpenses.disabled = true;
 
 if (localStorage.length === 0) {
   localStorage.setItem("tableIncome", JSON.stringify([]));
@@ -76,56 +76,90 @@ let numberExpenses = document.querySelector(".numberExpenses");
 let dateExpenses = document.querySelector(".dateExpenses");
 
 function addInfoFirst() {
+  addIncomeModalLabel.textContent = "Добавление дохода";
   addIncomeCategory.value = "";
   addIncomeSum.value = "";
   addIncomeDate.value = "";
 }
 function addInfoSecond() {
-  addExpenseCategory.value = "";
-  addExpenseSum.value = "";
-  addExpenseDate.value = "";
-}
-
-function addOkFirst() {
-  const new_Row = {
-    id: `${Math.round(Math.random(1) * 1000)}_${Math.round(
-      Math.random(1) * 1000
-    )}`,
-    category: addIncomeCategory.value,
-    sum: addIncomeSum.value,
-    data: formatDate(addIncomeDate.value),
-  };
-  gridOptions_1.api.applyTransaction({
-    add: [new_Row],
-  });
-  let currentData = JSON.parse(localStorage.getItem("tableIncome"));
-  currentData.push(new_Row);
-  localStorage.setItem("tableIncome", JSON.stringify(currentData));
+  addIncomeModalLabel.textContent = "Добавление расхода";
   addIncomeCategory.value = "";
   addIncomeSum.value = "";
   addIncomeDate.value = "";
-  console.log(localStorage);
 }
 
-function addOkSecond() {
-  const new_Row = {
-    id: `${Math.round(Math.random(1) * 1000)}_${Math.round(
-      Math.random(1) * 1000
-    )}`,
-    category: addExpenseCategory.value,
-    sum: addExpenseSum.value,
-    data: formatDate(addExpenseDate.value),
-  };
-  gridOptions_2.api.applyTransaction({
-    add: [new_Row],
-  });
-  let currentData = JSON.parse(localStorage.getItem("tableExpenses"));
-  currentData.push(new_Row);
-  localStorage.setItem("tableExpenses", JSON.stringify(currentData));
-  addExpenseCategory.value = "";
-  addExpenseSum.value = "";
-  addExpenseDate.value = "";
-  console.log(localStorage);
+function addOk() {
+  switch (true) {
+    case addIncomeModalLabel.textContent == "Добавление дохода":
+      const newRowIncome = {
+        id: `${Math.round(Math.random(1) * 1000)}_${Math.round(
+          Math.random(1) * 1000
+        )}`,
+        category: addIncomeCategory.value,
+        sum: addIncomeSum.value,
+        data: formatDate(addIncomeDate.value),
+      };
+      gridOptions_1.api.applyTransaction({
+        add: [newRowIncome],
+      });
+      let currentDataIncome = JSON.parse(localStorage.getItem("tableIncome"));
+      currentDataIncome.push(newRowIncome);
+      localStorage.setItem("tableIncome", JSON.stringify(currentDataIncome));
+      addIncomeCategory.value = "";
+      addIncomeSum.value = "";
+      addIncomeDate.value = "";
+      console.log(localStorage);
+      break;
+    case addIncomeModalLabel.textContent == "Добавление расхода":
+      const newRowExpenses = {
+        id: `${Math.round(Math.random(1) * 1000)}_${Math.round(
+          Math.random(1) * 1000
+        )}`,
+        category: addIncomeCategory.value,
+        sum: addIncomeSum.value,
+        data: formatDate(addIncomeDate.value),
+      };
+      gridOptions_2.api.applyTransaction({
+        add: [newRowExpenses],
+      });
+      let currentDataExpenses = JSON.parse(
+        localStorage.getItem("tableExpenses")
+      );
+      currentDataExpenses.push(newRowExpenses);
+      localStorage.setItem(
+        "tableExpenses",
+        JSON.stringify(currentDataExpenses)
+      );
+      addIncomeCategory.value = "";
+      addIncomeSum.value = "";
+      addIncomeDate.value = "";
+      console.log(localStorage);
+      break;
+    case addIncomeModalLabel.textContent == "Редактирование дохода":
+      const selectedData1 = gridOptions_1.api.getSelectedRows();
+      let allDataIncome = [];
+      selectedData1.forEach((row) => {
+        row.category = addIncomeCategory.value;
+        row.sum = addIncomeSum.value;
+        row.data = formatDate(addIncomeDate.value);
+      });
+      gridOptions_1.api.applyTransaction({ update: selectedData1 });
+      gridOptions_1.api.forEachNode((node) => allDataIncome.push(node.data));
+      localStorage.setItem("tableIncome", JSON.stringify(allDataIncome));
+      break;
+    case addIncomeModalLabel.textContent == "Редактирование расхода":
+      const selectedData2 = gridOptions_2.api.getSelectedRows();
+      let allDataExpenses = [];
+      selectedData2.forEach((row) => {
+        row.category = addIncomeCategory.value;
+        row.sum = addIncomeSum.value;
+        row.data = formatDate(addIncomeDate.value);
+      });
+      gridOptions_2.api.applyTransaction({ update: selectedData2 });
+      gridOptions_2.api.forEachNode((node) => allDataExpenses.push(node.data));
+      localStorage.setItem("tableExpenses", JSON.stringify(allDataExpenses));
+      break;
+  }
 }
 
 function formatDate(date) {
@@ -143,43 +177,18 @@ function formatDate(date) {
 }
 
 function redInfoFirst() {
+  addIncomeModalLabel.textContent = "Редактирование дохода";
   const selectedData1 = gridOptions_1.api.getSelectedRows();
-  editIncomeCategory.value = selectedData1[0].category;
-  editIncomeSum.value = selectedData1[0].sum;
-  editIncomeDate.value = selectedData1[0].data;
-  console.log(editIncomeDate.value);
+  addIncomeCategory.value = selectedData1[0].category;
+  addIncomeSum.value = selectedData1[0].sum;
+  addIncomeDate.value = selectedData1[0].data;
 }
 function redInfoSecond() {
   const selectedData2 = gridOptions_2.api.getSelectedRows();
-  editExpenseCategory.value = selectedData2[0].category;
-  editExpenseSum.value = selectedData2[0].sum;
-  editExpenseDate.value = selectedData2[0].data;
-}
-function redOkFirst() {
-  const selectedData1 = gridOptions_1.api.getSelectedRows();
-  selectedData1.forEach((row) => {
-    row.category = editIncomeCategory.value;
-    row.sum = editIncomeSum.value;
-    row.data = formatDate(editIncomeDate.value);
-  });
-  gridOptions_1.api.applyTransaction({ update: selectedData1 });
-  const allData = [];
-  gridOptions_1.api.forEachNode((node) => allData.push(node.data));
-  localStorage.setItem("tableIncome", JSON.stringify(allData));
-}
-
-function redOkSecond() {
-  const selectedData2 = gridOptions_2.api.getSelectedRows();
-  selectedData2.forEach((row) => {
-    row.category = editExpenseCategory.value;
-    row.sum = editExpenseSum.value;
-    row.data = formatDate(editExpenseDate.value);
-  });
-  gridOptions_2.api.applyTransaction({ update: selectedData2 });
-  const allData = [];
-  gridOptions_2.api.forEachNode((node) => allData.push(node.data));
-  localStorage.setItem("tableExpenses", JSON.stringify(allData));
-  console.log(localStorage);
+  addIncomeModalLabel.textContent = "Редактирование расхода";
+  addIncomeCategory.value = selectedData2[0].category;
+  addIncomeSum.value = selectedData2[0].sum;
+  addIncomeDate.value = selectedData2[0].data;
 }
 
 function deleteIncome() {
@@ -220,7 +229,6 @@ function buttonSwitch() {
   ) {
     firstPart.style.display = "block";
     secondPart.style.display = "none";
-    location.reload();
   } else {
     firstPart.style.display = "none";
     secondPart.style.display = "block";

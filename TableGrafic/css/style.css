@@ -141,4 +141,6 @@ input[type="date"]::-webkit-clear-button {
      z-index: 1;
  }
 	
-
+.forButtons{
+    justify-content: center;
+}
