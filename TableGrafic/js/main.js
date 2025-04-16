@@ -83,7 +83,12 @@ const expenseGrid = document.querySelector("#expenseGrid");
 agGrid.createGrid(incomeGrid, incomeGridOptions);
 agGrid.createGrid(expenseGrid, expenseGridOptions);
 
-if (localStorage.length === 0) {
+localStorage.setItem("1", 1);
+
+if (
+  !localStorage.getItem("incomeTableRows") ||
+  !localStorage.getItem("expenseTableRows")
+) {
   localStorage.setItem("incomeTableRows", JSON.stringify([]));
   localStorage.setItem("expenseTableRows", JSON.stringify([]));
 }
@@ -113,7 +118,7 @@ function incomeResetCreateForm() {
   inputDate.value = "";
 }
 function expenseResetCreateForm() {
-  incomeModalTittle.textContent = incomeModalTittleCreate;
+  incomeModalTittle.textContent = expenseModalTittleCreate;
   inputCategory.value = "";
   inputSum.value = "";
   inputDate.value = "";
@@ -159,7 +164,7 @@ function saveModalButton() {
       inputSum.value = "";
       inputDate.value = "";
       break;
-    case incomeModalTittle.textContent == incomeModalTittleCreate:
+    case incomeModalTittle.textContent == expenseModalTittleCreate:
       const newRowExpenses = {
         id: `${Math.round(Math.random(1) * 1000)}_${Math.round(
           Math.random(1) * 1000
