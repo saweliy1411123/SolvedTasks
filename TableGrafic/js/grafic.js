@@ -1,22 +1,19 @@
 let myChartFirst = echarts.init(document.getElementById("mainFirst"));
 let myChartSecond = echarts.init(document.getElementById("mainSecond"));
-let nameElementsFirst = [];
-let nameFirst = [];
-let nameSecond = [];
-let sumElementsFirst = [];
-let nameElementsSecond = [];
-let sumElementsSecond = [];
-let dateElementFirst = [];
-let dateElementSecond = [];
-let sums = 0;
+let dateForFirstTable = [];
+let numberForFirstTable = [];
+let numberForSecondTable = [];
+let dateArrayForAllTable = [];
+let dateArrayForSecondTable = [];
+let sumOfNumbers = 0;
 let dateRangeFirst = document.querySelectorAll(".dateElements")[0];
 let dateRangeSecond = document.querySelectorAll(".dateElements")[1];
 let dateRangeThird = document.querySelectorAll(".dateElements")[2];
 let dateRangeFourth = document.querySelectorAll(".dateElements")[3];
-let date1 = false;
-let date2 = false;
-let date3 = false;
-let date4 = false;
+let firstAlreadyCheck = false;
+let secondAlreadyCheck = false;
+let thirdAlreadyCheck = false;
+let fourthAlreadyCheck = false;
 
 function formatDate(date) {
   let d = new Date(date);
@@ -33,34 +30,32 @@ function formatDate(date) {
 }
 
 function dateRange1() {
-  date1 = true;
+  firstAlreadyCheck = true;
   checkDateFirst();
 }
 function dateRange2() {
-  date2 = true;
+  secondAlreadyCheck = true;
   checkDateFirst();
 }
 function dateRange3() {
-  date3 = true;
+  thirdAlreadyCheck = true;
   checkDateSecond();
 }
 function dateRange4() {
-  date4 = true;
+  fourthAlreadyCheck = true;
   checkDateSecond();
 }
 function checkDateFirst() {
-  if (date1 && date2) {
+  if (firstAlreadyCheck && secondAlreadyCheck) {
     let tableFirst = JSON.parse(localStorage.getItem("tableIncome")) || [];
     let tableSecond = JSON.parse(localStorage.getItem("tableExpenses")) || [];
-    dateElementFirst = [];
-    dateElementSecond = [];
-    nameElementsFirst = [];
-    sumElementsFirst = [];
-    nameElementsSecond = [];
-    sumElementsSecond = [];
+    dateArrayForAllTable = [];
+    dateForFirstTable = [];
+    numberForFirstTable = [];
+    numberForSecondTable = [];
 
     for (let i = 0; i < tableFirst.length; i++) {
-      dateElementFirst.push([
+      dateArrayForAllTable.push([
         formatDate(tableFirst[i].data),
         1,
         tableFirst[i].sum,
@@ -68,21 +63,24 @@ function checkDateFirst() {
       ]);
     }
     for (let i = 0; i < tableSecond.length; i++) {
-      dateElementFirst.push([
+      dateArrayForAllTable.push([
         formatDate(tableSecond[i].data),
         2,
         tableSecond[i].sum,
         tableSecond[i].category,
       ]);
     }
-    dateElementFirst.sort();
+    dateArrayForAllTable.sort();
     let rangeDataElement = [];
     let start = formatDate(dateRangeFirst.value);
     let end = formatDate(dateRangeSecond.value);
 
-    for (let i = 0; i < dateElementFirst.length; i++) {
-      if (dateElementFirst[i][0] >= start && dateElementFirst[i][0] <= end) {
-        rangeDataElement.push(dateElementFirst[i]);
+    for (let i = 0; i < dateArrayForAllTable.length; i++) {
+      if (
+        dateArrayForAllTable[i][0] >= start &&
+        dateArrayForAllTable[i][0] <= end
+      ) {
+        rangeDataElement.push(dateArrayForAllTable[i]);
       }
     }
     for (let i = 0; i < rangeDataElement.length; i++) {
@@ -90,30 +88,18 @@ function checkDateFirst() {
         i + 1 < rangeDataElement.length &&
         rangeDataElement[i][0] == rangeDataElement[i + 1][0]
       ) {
-        nameElementsFirst.push(rangeDataElement[i][0]);
-        sumElementsFirst.push(rangeDataElement[i][2]);
-        sumElementsSecond.push(rangeDataElement[i + 1][2]);
-        nameFirst.push(rangeDataElement[i][3]);
-        nameSecond.push(rangeDataElement[i + 1][3]);
-        console.log(nameFirst);
-        console.log(nameSecond);
+        dateForFirstTable.push(rangeDataElement[i][0]);
+        numberForFirstTable.push(rangeDataElement[i][2]);
+        numberForSecondTable.push(rangeDataElement[i + 1][2]);
         i += 1;
       } else {
-        nameElementsFirst.push(rangeDataElement[i][0]);
+        dateForFirstTable.push(rangeDataElement[i][0]);
         if (Number(rangeDataElement[i][1]) == 2) {
-          sumElementsFirst.push("");
-          sumElementsSecond.push(rangeDataElement[i][2]);
-          nameSecond.push(rangeDataElement[i + 1][3]);
-          nameFirst.push("");
-          console.log(nameFirst);
-          console.log(nameSecond);
+          numberForFirstTable.push("");
+          numberForSecondTable.push(rangeDataElement[i][2]);
         } else {
-          sumElementsFirst.push(rangeDataElement[i][2]);
-          sumElementsSecond.push("");
-          nameFirst.push(rangeDataElement[i][3]);
-          nameSecond.push("");
-          console.log(nameFirst);
-          console.log(nameSecond);
+          numberForFirstTable.push(rangeDataElement[i][2]);
+          numberForSecondTable.push("");
         }
       }
     }
@@ -123,26 +109,26 @@ function checkDateFirst() {
 }
 
 function checkDateSecond() {
-  if (date3 && date4) {
-    nameElementsFirst = [];
-    sumElementsFirst = [];
-    dateElementFirst = [];
-    sums = 0;
+  if (thirdAlreadyCheck && fourthAlreadyCheck) {
+    dateForFirstTable = [];
+    numberForFirstTable = [];
+    dateArrayForAllTable = [];
+    sumOfNumbers = 0;
     let tableFirst = JSON.parse(localStorage.getItem("tableIncome")) || [];
     for (let i = 0; i < tableFirst.length; i++) {
-      dateElementFirst.push(formatDate(tableFirst[i].data));
+      dateArrayForAllTable.push(formatDate(tableFirst[i].data));
     }
     let start = formatDate(dateRangeThird.value);
     let end = formatDate(dateRangeFourth.value);
     for (let i = 0; i < tableFirst.length; i++) {
-      let targetFirst = dateElementFirst[i];
+      let targetFirst = dateArrayForAllTable[i];
       if (targetFirst >= start && targetFirst <= end) {
-        nameElementsFirst.push(tableFirst[i].category);
-        sumElementsFirst.push(tableFirst[i].sum);
-        sums += +tableFirst[i].sum;
+        dateForFirstTable.push(tableFirst[i].category);
+        numberForFirstTable.push(tableFirst[i].sum);
+        sumOfNumbers += +tableFirst[i].sum;
       }
     }
-    console.log(sums);
+    console.log(sumOfNumbers);
     trueSecond();
   }
 }
@@ -156,19 +142,19 @@ function trueFirst() {
       orient: "horizontal",
     },
     xAxis: {
-      data: nameElementsFirst,
+      data: dateForFirstTable,
     },
     yAxis: {},
     series: [
       {
         type: "bar",
         name: "Доход",
-        data: sumElementsFirst,
+        data: numberForFirstTable,
       },
       {
         type: "bar",
         name: "Расход",
-        data: sumElementsSecond,
+        data: numberForSecondTable,
       },
     ],
   };
@@ -188,7 +174,7 @@ function trueSecond() {
       data: [],
     },
     title: {
-      text: `${sums} руб.`,
+      text: `${sumOfNumbers} руб.`,
       left: "center",
       top: "center",
     },
@@ -204,12 +190,12 @@ function trueSecond() {
       },
     ],
   };
-  for (let i = 0; i < nameElementsFirst.length; i++) {
+  for (let i = 0; i < dateForFirstTable.length; i++) {
     optionSecond.series[0].data.push({
-      value: sumElementsFirst[i],
-      name: nameElementsFirst[i],
+      value: numberForFirstTable[i],
+      name: dateForFirstTable[i],
     });
-    optionSecond.legend.data.push(nameElementsFirst[i]);
+    optionSecond.legend.data.push(dateForFirstTable[i]);
   }
 
   myChartSecond.setOption(optionSecond);

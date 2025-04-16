@@ -1,30 +1,30 @@
 let gridApi;
+redIncome.disabled = true;
+redExpenses.disabled = true;
 let gridCheckFirst = false;
 let gridCheckSecond = false;
+let addIncomeText = "Добавление доходов";
+let addExpensesText = "Добавление расходов";
+let redIncomeText = "Редактирование доходов";
+let redExpensesText = "Редактирование расходов";
 let textIncome = document.querySelector(".textIncome");
 let numberIncome = document.querySelector(".numberIncome");
 let dateIncome = document.querySelector(".dateIncome");
 let textExpenses = document.querySelector(".textExpenses");
 let numberExpenses = document.querySelector(".numberExpenses");
 let dateExpenses = document.querySelector(".dateExpenses");
-redIncome.disabled = true;
-redExpenses.disabled = true;
-let addIncomeText = "Добавление доходов";
-let addExpensesText = "Добавление расходов";
-let redIncomeText = "Редактирование доходов";
-let redExpensesText = "Редактирование расходов";
 
-const gridOptions_1 = {
+const gridOptionsFirstTable = {
   rowData: [],
   columnDefs: [{ field: "category" }, { field: "sum" }, { field: "data" }],
   rowSelection: { mode: "multiRow" },
   onGridReady: function (params) {
-    gridOptions_1.api = params.api;
+    gridOptionsFirstTable.api = params.api;
     gridCheckFirst = true;
     check();
   },
   onSelectionChanged: () => {
-    let selectedRowsFirst = gridOptions_1.api.getSelectedRows().length;
+    let selectedRowsFirst = gridOptionsFirstTable.api.getSelectedRows().length;
     if (selectedRowsFirst === 1) {
       redIncome.disabled = false;
     } else {
@@ -33,17 +33,18 @@ const gridOptions_1 = {
   },
 };
 
-const gridOptions_2 = {
+const gridOptionsSecondTable = {
   rowData: [],
   columnDefs: [{ field: "category" }, { field: "sum" }, { field: "data" }],
   rowSelection: { mode: "multiRow" },
   onGridReady: function (params) {
-    gridOptions_2.api = params.api;
+    gridOptionsSecondTable.api = params.api;
     gridCheckSecond = true;
     check();
   },
   onSelectionChanged: () => {
-    let selectedRowsSecond = gridOptions_2.api.getSelectedRows().length;
+    let selectedRowsSecond =
+      gridOptionsSecondTable.api.getSelectedRows().length;
     if (selectedRowsSecond === 1) {
       redExpenses.disabled = false;
     } else {
@@ -54,8 +55,8 @@ const gridOptions_2 = {
 
 const myGridfirst = document.querySelector("#myGridfirst");
 const myGridsecond = document.querySelector("#myGridsecond");
-agGrid.createGrid(myGridfirst, gridOptions_1);
-agGrid.createGrid(myGridsecond, gridOptions_2);
+agGrid.createGrid(myGridfirst, gridOptionsFirstTable);
+agGrid.createGrid(myGridsecond, gridOptionsSecondTable);
 
 if (localStorage.length === 0) {
   localStorage.setItem("tableIncome", JSON.stringify([]));
@@ -64,17 +65,17 @@ if (localStorage.length === 0) {
 
 function check() {
   if (gridCheckFirst && gridCheckSecond) {
-    load();
+    loadLocalStorage();
   }
 }
-function load() {
+function loadLocalStorage() {
   let tableFirst = JSON.parse(localStorage.getItem("tableIncome")) || [];
   let tableSecond = JSON.parse(localStorage.getItem("tableExpenses")) || [];
   for (let i = 0; i < tableFirst.length; i++) {
-    gridOptions_1.api.applyTransaction({ add: [tableFirst[i]] });
+    gridOptionsFirstTable.api.applyTransaction({ add: [tableFirst[i]] });
   }
   for (let i = 0; i < tableSecond.length; i++) {
-    gridOptions_2.api.applyTransaction({ add: [tableSecond[i]] });
+    gridOptionsSecondTable.api.applyTransaction({ add: [tableSecond[i]] });
   }
 }
 console.log(localStorage);
@@ -92,7 +93,7 @@ function addInfoSecond() {
   addIncomeDate.value = "";
 }
 
-function addOk() {
+function okForModals() {
   switch (true) {
     case addIncomeModalLabel.textContent == addIncomeText:
       const newRowIncome = {
@@ -103,7 +104,7 @@ function addOk() {
         sum: addIncomeSum.value,
         data: formatDate(addIncomeDate.value),
       };
-      gridOptions_1.api.applyTransaction({
+      gridOptionsFirstTable.api.applyTransaction({
         add: [newRowIncome],
       });
       let currentDataIncome = JSON.parse(localStorage.getItem("tableIncome"));
@@ -123,7 +124,7 @@ function addOk() {
         sum: addIncomeSum.value,
         data: formatDate(addIncomeDate.value),
       };
-      gridOptions_2.api.applyTransaction({
+      gridOptionsSecondTable.api.applyTransaction({
         add: [newRowExpenses],
       });
       let currentDataExpenses = JSON.parse(
@@ -140,27 +141,31 @@ function addOk() {
       console.log(localStorage);
       break;
     case addIncomeModalLabel.textContent == redIncomeText:
-      const selectedData1 = gridOptions_1.api.getSelectedRows();
+      const selectedData1 = gridOptionsFirstTable.api.getSelectedRows();
       let allDataIncome = [];
       selectedData1.forEach((row) => {
         row.category = addIncomeCategory.value;
         row.sum = addIncomeSum.value;
         row.data = formatDate(addIncomeDate.value);
       });
-      gridOptions_1.api.applyTransaction({ update: selectedData1 });
-      gridOptions_1.api.forEachNode((node) => allDataIncome.push(node.data));
+      gridOptionsFirstTable.api.applyTransaction({ update: selectedData1 });
+      gridOptionsFirstTable.api.forEachNode((node) =>
+        allDataIncome.push(node.data)
+      );
       localStorage.setItem("tableIncome", JSON.stringify(allDataIncome));
       break;
     case addIncomeModalLabel.textContent == redExpensesText:
-      const selectedData2 = gridOptions_2.api.getSelectedRows();
+      const selectedData2 = gridOptionsSecondTable.api.getSelectedRows();
       let allDataExpenses = [];
       selectedData2.forEach((row) => {
         row.category = addIncomeCategory.value;
         row.sum = addIncomeSum.value;
         row.data = formatDate(addIncomeDate.value);
       });
-      gridOptions_2.api.applyTransaction({ update: selectedData2 });
-      gridOptions_2.api.forEachNode((node) => allDataExpenses.push(node.data));
+      gridOptionsSecondTable.api.applyTransaction({ update: selectedData2 });
+      gridOptionsSecondTable.api.forEachNode((node) =>
+        allDataExpenses.push(node.data)
+      );
       localStorage.setItem("tableExpenses", JSON.stringify(allDataExpenses));
       break;
   }
@@ -182,13 +187,13 @@ function formatDate(date) {
 
 function redInfoFirst() {
   addIncomeModalLabel.textContent = redIncomeText;
-  const selectedData1 = gridOptions_1.api.getSelectedRows();
+  const selectedData1 = gridOptionsFirstTable.api.getSelectedRows();
   addIncomeCategory.value = selectedData1[0].category;
   addIncomeSum.value = selectedData1[0].sum;
   addIncomeDate.value = selectedData1[0].data;
 }
 function redInfoSecond() {
-  const selectedData2 = gridOptions_2.api.getSelectedRows();
+  const selectedData2 = gridOptionsSecondTable.api.getSelectedRows();
   addIncomeModalLabel.textContent = redExpensesText;
   addIncomeCategory.value = selectedData2[0].category;
   addIncomeSum.value = selectedData2[0].sum;
@@ -196,8 +201,8 @@ function redInfoSecond() {
 }
 
 function deleteIncome() {
-  const selectedData = gridOptions_1.api.getSelectedRows();
-  gridOptions_1.api.applyTransaction({ remove: selectedData });
+  const selectedData = gridOptionsFirstTable.api.getSelectedRows();
+  gridOptionsFirstTable.api.applyTransaction({ remove: selectedData });
   let tableIncome = JSON.parse(localStorage.getItem("tableIncome"));
   const updatedData = tableIncome.filter(
     (item) => !selectedData.some((row) => row.id === item.id)
@@ -209,8 +214,8 @@ function deleteIncome() {
 }
 
 function deleteExpenses() {
-  const selectedData = gridOptions_2.api.getSelectedRows();
-  gridOptions_2.api.applyTransaction({ remove: selectedData });
+  const selectedData = gridOptionsSecondTable.api.getSelectedRows();
+  gridOptionsSecondTable.api.applyTransaction({ remove: selectedData });
   let tableExpenses = JSON.parse(localStorage.getItem("tableExpenses"));
   const updatedData = tableExpenses.filter(
     (item) => !selectedData.some((row) => row.id === item.id)
@@ -221,18 +226,18 @@ function deleteExpenses() {
   console.log(localStorage);
 }
 
-let firstPart = document.querySelector(".firstPart");
-let secondPart = document.querySelector(".secondPart");
-secondPart.style.display = "none";
+let tablePartHTML = document.querySelector(".tablePartHTML");
+let graficPartHTML = document.querySelector(".graficPartHTML");
+graficPartHTML.style.display = "none";
 function buttonSwitch() {
   if (
-    firstPart.style.display == "none" &&
-    secondPart.style.display == "block"
+    tablePartHTML.style.display == "none" &&
+    graficPartHTML.style.display == "block"
   ) {
-    firstPart.style.display = "block";
-    secondPart.style.display = "none";
+    tablePartHTML.style.display = "block";
+    graficPartHTML.style.display = "none";
   } else {
-    firstPart.style.display = "none";
-    secondPart.style.display = "block";
+    tablePartHTML.style.display = "none";
+    graficPartHTML.style.display = "block";
   }
 }

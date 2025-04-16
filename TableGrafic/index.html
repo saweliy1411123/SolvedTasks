@@ -7,7 +7,7 @@
     </head>
 <body>
   <button class="mt-4 mb-4 border border-2 border-dark rounded d-flex justify-content-center w-auto mx-auto p-2" onclick="buttonSwitch()">Переключиться</button>
-  <div class="firstPart">
+  <div class="tablePartHTML">
     <div class="gridColumns d-grid mt-2 mb-2">
       <p class="d-flex justify-content-center fw-bold fs-1">Доходы</p>
       <p class="d-flex justify-content-center fw-bold fs-1">Расходы</p>
@@ -49,7 +49,7 @@
             </div>
             <div class="modal-footer">
               <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-              <button class="btn btn-primary" onclick="addOk()" data-bs-dismiss="modal">Сохранить</button>
+              <button class="btn btn-primary" onclick="okForModals()" data-bs-dismiss="modal">Сохранить</button>
             </div>
           </div>
       </div>
@@ -59,7 +59,7 @@
       <div class="myGrid" id="myGridsecond"></div>
   </div>
   </div>
-  <div class="secondPart">
+  <div class="graficPartHTML">
     <h1 class="d-flex justify-content-center mt-5 mb-2">Графики</h1>
     <div class="d-flex justify-content-around mb-3 mt-3">
       <div>
