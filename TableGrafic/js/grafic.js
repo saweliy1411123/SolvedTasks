@@ -1,168 +1,125 @@
-let sumOfNumbers = 0;
-let dateForFirstTable = [];
-let numberForFirstTable = [];
-let numberForSecondTable = [];
-let dateArrayForAllTable = [];
-let dateArrayForSecondTable = [];
-let firstAlreadyCheck = false;
-let secondAlreadyCheck = false;
-let thirdAlreadyCheck = false;
-let fourthAlreadyCheck = false;
-let dateRangeFirst = document.querySelectorAll(".dateElements")[0];
-let dateRangeSecond = document.querySelectorAll(".dateElements")[1];
-let dateRangeThird = document.querySelectorAll(".dateElements")[2];
-let dateRangeFourth = document.querySelectorAll(".dateElements")[3];
-let myChartFirst = echarts.init(document.getElementById("mainFirst"));
-let myChartSecond = echarts.init(document.getElementById("mainSecond"));
+let barChart = echarts.init(document.getElementById("mainFirst"));
+let ringChart = echarts.init(document.getElementById("mainSecond"));
+let categoryNameList = [];
+let incomeValuesList = [];
+let expenseValuesList = [];
+let allDatesList = [];
 
-function formatDate(date) {
-  let d = new Date(date);
-  let day =
-    String(d.getDate()).length === 1
-      ? String(`0${d.getDate()}`)
-      : String(d.getDate());
-  let month =
-    String(d.getMonth() + 1).length === 1
-      ? String(`0${d.getMonth() + 1}`)
-      : String(d.getMonth() + 1);
-  let year = d.getFullYear();
-  return `${year}-${month}-${day}`;
-}
+let totalIncomeSum = 0;
+let dateRangeFromFirst = document.querySelectorAll(".dateElements")[0];
+let dateRangeToFirst = document.querySelectorAll(".dateElements")[1];
+let dateRangeFromSecond = document.querySelectorAll(".dateElements")[2];
+let dateRangeToSecond = document.querySelectorAll(".dateElements")[3];
+let isDateFromFirst = false;
+let isDateToFirst = false;
+let isDateFromSecond = false;
+let isDateToSecond = false;
 
-function dateRange1() {
-  firstAlreadyCheck = true;
-  checkDateFirst();
+function checkProcessDateFromFirst() {
+  isDateFromFirst = true;
+  checkDateFirstRange();
 }
-function dateRange2() {
-  secondAlreadyCheck = true;
-  checkDateFirst();
+function checkProcessDateToFirst() {
+  isDateToFirst = true;
+  checkDateFirstRange();
 }
-function dateRange3() {
-  thirdAlreadyCheck = true;
-  checkDateSecond();
+function checkProcessDateFromSecond() {
+  isDateFromSecond = true;
+  checkDateSecondRange();
 }
-function dateRange4() {
-  fourthAlreadyCheck = true;
-  checkDateSecond();
+function checkProcessDateToSecond() {
+  isDateToSecond = true;
+  checkDateSecondRange();
 }
-function checkDateFirst() {
-  if (firstAlreadyCheck && secondAlreadyCheck) {
-    let tableFirst = JSON.parse(localStorage.getItem("tableIncome")) || [];
-    let tableSecond = JSON.parse(localStorage.getItem("tableExpenses")) || [];
-    dateArrayForAllTable = [];
-    dateForFirstTable = [];
-    numberForFirstTable = [];
-    numberForSecondTable = [];
-
-    for (let i = 0; i < tableFirst.length; i++) {
-      dateArrayForAllTable.push([
-        formatDate(tableFirst[i].data),
-        1,
-        tableFirst[i].sum,
-        tableFirst[i].category,
-      ]);
+function checkDateFirstRange() {
+  if (isDateFromFirst && isDateToFirst) {
+    categoryNameList = [];
+    incomeValuesList = [];
+    allDatesList = [];
+    totalIncomeSum = 0;
+    let incomeTableData =
+      JSON.parse(localStorage.getItem("incomeTableRows")) || [];
+    for (let i = 0; i < incomeTableData.length; i++) {
+      allDatesList.push(incomeTableData[i].data);
     }
-    for (let i = 0; i < tableSecond.length; i++) {
-      dateArrayForAllTable.push([
-        formatDate(tableSecond[i].data),
-        2,
-        tableSecond[i].sum,
-        tableSecond[i].category,
-      ]);
-    }
-    dateArrayForAllTable.sort();
-    let rangeDataElement = [];
-    let start = formatDate(dateRangeFirst.value);
-    let end = formatDate(dateRangeSecond.value);
-
-    for (let i = 0; i < dateArrayForAllTable.length; i++) {
-      if (
-        dateArrayForAllTable[i][0] >= start &&
-        dateArrayForAllTable[i][0] <= end
-      ) {
-        rangeDataElement.push(dateArrayForAllTable[i]);
+    let start = dateRangeFromFirst.value;
+    let end = dateRangeToFirst.value;
+    for (let i = 0; i < incomeTableData.length; i++) {
+      let targetFirst = allDatesList[i];
+      if (targetFirst >= start && targetFirst <= end) {
+        categoryNameList.push(incomeTableData[i].category);
+        incomeValuesList.push(incomeTableData[i].sum);
+        totalIncomeSum += +incomeTableData[i].sum;
       }
     }
-    for (let i = 0; i < rangeDataElement.length; i++) {
+    generateBarChart();
+  }
+}
+
+function checkDateSecondRange() {
+  if (isDateFromSecond && isDateToSecond) {
+    let incomeTableData =
+      JSON.parse(localStorage.getItem("incomeTableRows")) || [];
+    let expenseTableData =
+      JSON.parse(localStorage.getItem("expenseTableRows")) || [];
+    allDatesList = [];
+    categoryNameList = [];
+    incomeValuesList = [];
+    expenseValuesList = [];
+
+    for (let i = 0; i < incomeTableData.length; i++) {
+      allDatesList.push([
+        incomeTableData[i].data,
+        1,
+        incomeTableData[i].sum,
+        incomeTableData[i].category,
+      ]);
+    }
+    for (let i = 0; i < expenseTableData.length; i++) {
+      allDatesList.push([
+        expenseTableData[i].data,
+        2,
+        expenseTableData[i].sum,
+        expenseTableData[i].category,
+      ]);
+    }
+    allDatesList.sort();
+    let filteredData = [];
+    let start = dateRangeFromSecond.value;
+    let end = dateRangeToSecond.value;
+
+    for (let i = 0; i < allDatesList.length; i++) {
+      if (allDatesList[i][0] >= start && allDatesList[i][0] <= end) {
+        filteredData.push(allDatesList[i]);
+      }
+    }
+    for (let i = 0; i < filteredData.length; i++) {
       if (
-        i + 1 < rangeDataElement.length &&
-        rangeDataElement[i][0] == rangeDataElement[i + 1][0]
+        i + 1 < filteredData.length &&
+        filteredData[i][0] == filteredData[i + 1][0]
       ) {
-        dateForFirstTable.push(rangeDataElement[i][0]);
-        numberForFirstTable.push(rangeDataElement[i][2]);
-        numberForSecondTable.push(rangeDataElement[i + 1][2]);
+        categoryNameList.push(filteredData[i][0]);
+        incomeValuesList.push(filteredData[i][2]);
+        expenseValuesList.push(filteredData[i + 1][2]);
         i += 1;
       } else {
-        dateForFirstTable.push(rangeDataElement[i][0]);
-        if (Number(rangeDataElement[i][1]) == 2) {
-          numberForFirstTable.push("");
-          numberForSecondTable.push(rangeDataElement[i][2]);
+        categoryNameList.push(filteredData[i][0]);
+        if (Number(filteredData[i][1]) == 2) {
+          incomeValuesList.push("");
+          expenseValuesList.push(filteredData[i][2]);
         } else {
-          numberForFirstTable.push(rangeDataElement[i][2]);
-          numberForSecondTable.push("");
+          incomeValuesList.push(filteredData[i][2]);
+          expenseValuesList.push("");
         }
       }
     }
 
-    trueFirst();
+    generateRingChart();
   }
 }
 
-function checkDateSecond() {
-  if (thirdAlreadyCheck && fourthAlreadyCheck) {
-    dateForFirstTable = [];
-    numberForFirstTable = [];
-    dateArrayForAllTable = [];
-    sumOfNumbers = 0;
-    let tableFirst = JSON.parse(localStorage.getItem("tableIncome")) || [];
-    for (let i = 0; i < tableFirst.length; i++) {
-      dateArrayForAllTable.push(formatDate(tableFirst[i].data));
-    }
-    let start = formatDate(dateRangeThird.value);
-    let end = formatDate(dateRangeFourth.value);
-    for (let i = 0; i < tableFirst.length; i++) {
-      let targetFirst = dateArrayForAllTable[i];
-      if (targetFirst >= start && targetFirst <= end) {
-        dateForFirstTable.push(tableFirst[i].category);
-        numberForFirstTable.push(tableFirst[i].sum);
-        sumOfNumbers += +tableFirst[i].sum;
-      }
-    }
-    console.log(sumOfNumbers);
-    trueSecond();
-  }
-}
-
-function trueFirst() {
-  optionFirst = {
-    tooltip: {
-      trigger: "axis",
-    },
-    legend: {
-      orient: "horizontal",
-    },
-    xAxis: {
-      data: dateForFirstTable,
-    },
-    yAxis: {},
-    series: [
-      {
-        type: "bar",
-        name: "Доход",
-        data: numberForFirstTable,
-      },
-      {
-        type: "bar",
-        name: "Расход",
-        data: numberForSecondTable,
-      },
-    ],
-  };
-  myChartFirst.setOption(optionFirst);
-}
-
-function trueSecond() {
-  optionSecond = {
+function generateBarChart() {
+  pieChartOptions = {
     tooltip: {
       trigger: "item",
       formatter: "{b}: {c} руб. ({d}%)",
@@ -174,7 +131,7 @@ function trueSecond() {
       data: [],
     },
     title: {
-      text: `${sumOfNumbers} руб.`,
+      text: `${totalIncomeSum} руб.`,
       left: "center",
       top: "center",
     },
@@ -190,13 +147,43 @@ function trueSecond() {
       },
     ],
   };
-  for (let i = 0; i < dateForFirstTable.length; i++) {
-    optionSecond.series[0].data.push({
-      value: numberForFirstTable[i],
-      name: dateForFirstTable[i],
+  for (let i = 0; i < categoryNameList.length; i++) {
+    pieChartOptions.series[0].data.push({
+      value: incomeValuesList[i],
+      name: categoryNameList[i],
     });
-    optionSecond.legend.data.push(dateForFirstTable[i]);
+    pieChartOptions.legend.data.push(categoryNameList[i]);
   }
 
-  myChartSecond.setOption(optionSecond);
+  barChart.setOption(pieChartOptions);
+}
+
+function generateRingChart() {
+  BarChartOptions = {
+    tooltip: {
+      trigger: "axis",
+    },
+    legend: {
+      orient: "horizontal",
+      x: "center",
+      top: "bottom",
+    },
+    xAxis: {
+      data: categoryNameList,
+    },
+    yAxis: {},
+    series: [
+      {
+        type: "bar",
+        name: "Доход",
+        data: incomeValuesList,
+      },
+      {
+        type: "bar",
+        name: "Расход",
+        data: expenseValuesList,
+      },
+    ],
+  };
+  ringChart.setOption(BarChartOptions);
 }

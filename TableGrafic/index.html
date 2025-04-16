@@ -14,13 +14,13 @@
   </div>
   <div class="d-grid gridColumns mt-2 mb-2">
       <div class="d-flex gap-3 m-3 justify-content-center">
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="addInfoFirst()">Добавить</button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="redInfoFirst()" id="redIncome">Редактировать</button>
-          <button class="btn btn-danger"  onclick="deleteIncome()">Удалить</button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="incomeResetCreateForm()">Добавить</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="incomeResetEditForm()" id="editIncomeButton">Редактировать</button>
+          <button class="btn btn-danger"  onclick="incomeDeleteButton()">Удалить</button>
       </div>
       <div class="d-flex gap-3 m-3 justify-content-center">
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="addInfoSecond()">Добавить</button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="redInfoSecond()" id="redExpenses">Редактировать</button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="expenseResetCreateForm()">Добавить</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="expenseResetEditForm()" id="editExpenseButton">Редактировать</button>
           <button class="btn btn-danger" onclick="deleteExpenses()">Удалить</button>
       </div>
   </div>
@@ -28,47 +28,47 @@
       <div class="modal-dialog">
           <div class="modal-content">
             <div class="mb-2 d-flex justify-content-between mt-3 ms-3 me-3">
-              <h1 class="modal-title fs-4" id="addIncomeModalLabel">Добавление дохода</h1>
+              <h1 class="modal-title fs-4" id="incomeModalTittle">Добавление дохода</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body">
               <form id="addIncomeForm">
                 <fieldset class="position-relative border border-2 border-dark rounded p-4 pb-3 pt-4 mb-4 bg-white">
                   <legend class="formLegend bg-white w-auto position-absolute">Категория</legend>
-                  <input type="text" class="border-0 bg-transparent w-100 fs-7" id="addIncomeCategory" required>
+                  <input type="text" class="border-0 bg-transparent w-100 fs-7" id="inputCategory" required>
                 </fieldset>
                 <fieldset class="position-relative border border-2 border-dark rounded p-4 pb-3 pt-4 mb-4 bg-white">
                   <legend class="formLegend bg-white w-auto position-absolute">Сумма</legend>
-                  <input type="number" class="border-0 bg-transparent w-100 fs-7" id="addIncomeSum" required>
+                  <input type="number" class="border-0 bg-transparent w-100 fs-7" id="inputSum" required>
                 </fieldset>
                 <fieldset class="position-relative border border-2 border-dark rounded p-4 pb-3 pt-4 mb-4 bg-white">
                   <legend class="formLegend bg-white w-auto position-absolute">Дата</legend>
-                  <input type="date" class="border-0 bg-transparent w-100 fs-7" id="addIncomeDate" required>
+                  <input type="date" class="border-0 bg-transparent w-100 fs-7" id="inputDate" required>
                 </fieldset>
               </form>
             </div>
             <div class="modal-footer">
               <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-              <button class="btn btn-primary" onclick="okForModals()" data-bs-dismiss="modal">Сохранить</button>
+              <button class="btn btn-primary" onclick="saveModalButton()" data-bs-dismiss="modal">Сохранить</button>
             </div>
           </div>
       </div>
   </div>
   <div class="gridColumns w-90 mx-auto d-grid">
-      <div class="myGrid" id="myGridfirst"></div>
-      <div class="myGrid" id="myGridsecond"></div>
+      <div class="myGrid" id="incomeGrid"></div>
+      <div class="myGrid" id="expenseGrid"></div>
   </div>
   </div>
   <div class="graficPartHTML">
     <h1 class="d-flex justify-content-center mt-5 mb-2">Графики</h1>
     <div class="d-flex justify-content-around mb-3 mt-3">
       <div>
-        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="dateRange1()">
-        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="dateRange2()">
+        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="checkProcessDateFromFirst()">
+        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="checkProcessDateToFirst()">
       </div>
       <div>
-        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="dateRange3()">
-        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="dateRange4()">
+        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="checkProcessDateFromSecond()">
+        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="checkProcessDateToSecond()">
       </div>
     </div>
     <div class="d-flex justify-content-around mb-5">
