@@ -1,19 +1,19 @@
-let myChartFirst = echarts.init(document.getElementById("mainFirst"));
-let myChartSecond = echarts.init(document.getElementById("mainSecond"));
+let sumOfNumbers = 0;
 let dateForFirstTable = [];
 let numberForFirstTable = [];
 let numberForSecondTable = [];
 let dateArrayForAllTable = [];
 let dateArrayForSecondTable = [];
-let sumOfNumbers = 0;
-let dateRangeFirst = document.querySelectorAll(".dateElements")[0];
-let dateRangeSecond = document.querySelectorAll(".dateElements")[1];
-let dateRangeThird = document.querySelectorAll(".dateElements")[2];
-let dateRangeFourth = document.querySelectorAll(".dateElements")[3];
 let firstAlreadyCheck = false;
 let secondAlreadyCheck = false;
 let thirdAlreadyCheck = false;
 let fourthAlreadyCheck = false;
+let dateRangeFirst = document.querySelectorAll(".dateElements")[0];
+let dateRangeSecond = document.querySelectorAll(".dateElements")[1];
+let dateRangeThird = document.querySelectorAll(".dateElements")[2];
+let dateRangeFourth = document.querySelectorAll(".dateElements")[3];
+let myChartFirst = echarts.init(document.getElementById("mainFirst"));
+let myChartSecond = echarts.init(document.getElementById("mainSecond"));
 
 function formatDate(date) {
   let d = new Date(date);
