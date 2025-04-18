@@ -1,38 +1,49 @@
-let barChart = echarts.init(document.getElementById("mainFirst"));
-let ringChart = echarts.init(document.getElementById("mainSecond"));
+const financialComparisonChart = echarts.init(
+  document.getElementById("barChart")
+);
+const ringChartForIncome = echarts.init(document.getElementById("ringChart"));
 let categoryNameList = [];
 let incomeValuesList = [];
 let expenseValuesList = [];
 let allDatesList = [];
 
 let totalIncomeSum = 0;
-let dateRangeFromFirst = document.querySelectorAll(".dateElements")[0];
-let dateRangeToFirst = document.querySelectorAll(".dateElements")[1];
-let dateRangeFromSecond = document.querySelectorAll(".dateElements")[2];
-let dateRangeToSecond = document.querySelectorAll(".dateElements")[3];
-let isDateFromFirst = false;
-let isDateToFirst = false;
-let isDateFromSecond = false;
-let isDateToSecond = false;
+let startRingChartDate = document.querySelectorAll(".dateElements")[0];
+let endRingChartDate = document.querySelectorAll(".dateElements")[1];
+let startBarChartDate = document.querySelectorAll(".dateElements")[2];
+let endBarChartDate = document.querySelectorAll(".dateElements")[3];
+let isStartDateForRingChart = false;
+let isEndDateForRingChart = false;
+let isStartDateForBarChart = false;
+let isEndDateForBarChart = false;
 
-function checkProcessDateFromFirst() {
-  isDateFromFirst = true;
-  checkDateFirstRange();
+function setStartDateForRingChart() {
+  isStartDateForRingChart = true;
+  checkDateForRing();
 }
-function checkProcessDateToFirst() {
-  isDateToFirst = true;
-  checkDateFirstRange();
+function setEndDateForRingChart() {
+  isEndDateForRingChart = true;
+  checkDateForRing();
 }
-function checkProcessDateFromSecond() {
-  isDateFromSecond = true;
-  checkDateSecondRange();
+function setStartDateForBarChart() {
+  isStartDateForBarChart = true;
+  checkDateForBar();
 }
-function checkProcessDateToSecond() {
-  isDateToSecond = true;
-  checkDateSecondRange();
+function setEndDateForBarChart() {
+  isEndDateForBarChart = true;
+  checkDateForBar();
 }
-function checkDateFirstRange() {
-  if (isDateFromFirst && isDateToFirst) {
+
+function formatDate(date) {
+  let d = new Date(date);
+  let day = String(d.getDate()).padStart(2, "0");
+  let month = String(d.getMonth() + 1).padStart(2, "0");
+  let year = d.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
+function checkDateForRing() {
+  if (isStartDateForRingChart && isEndDateForRingChart) {
     categoryNameList = [];
     incomeValuesList = [];
     allDatesList = [];
@@ -42,22 +53,21 @@ function checkDateFirstRange() {
     for (let i = 0; i < incomeTableData.length; i++) {
       allDatesList.push(incomeTableData[i].data);
     }
-    let start = dateRangeFromFirst.value;
-    let end = dateRangeToFirst.value;
+    let start = startRingChartDate.value;
+    let end = endRingChartDate.value;
     for (let i = 0; i < incomeTableData.length; i++) {
-      let targetFirst = allDatesList[i];
-      if (targetFirst >= start && targetFirst <= end) {
+      if (allDatesList[i] >= start && allDatesList[i] <= end) {
         categoryNameList.push(incomeTableData[i].category);
         incomeValuesList.push(incomeTableData[i].sum);
         totalIncomeSum += +incomeTableData[i].sum;
       }
     }
-    generateBarChart();
+    createBarChart();
   }
 }
 
-function checkDateSecondRange() {
-  if (isDateFromSecond && isDateToSecond) {
+function checkDateForBar() {
+  if (isStartDateForBarChart && isEndDateForBarChart) {
     let incomeTableData =
       JSON.parse(localStorage.getItem("incomeTableRows")) || [];
     let expenseTableData =
@@ -85,8 +95,8 @@ function checkDateSecondRange() {
     }
     allDatesList.sort();
     let filteredData = [];
-    let start = dateRangeFromSecond.value;
-    let end = dateRangeToSecond.value;
+    let start = startBarChartDate.value;
+    let end = endBarChartDate.value;
 
     for (let i = 0; i < allDatesList.length; i++) {
       if (allDatesList[i][0] >= start && allDatesList[i][0] <= end) {
@@ -98,12 +108,12 @@ function checkDateSecondRange() {
         i + 1 < filteredData.length &&
         filteredData[i][0] == filteredData[i + 1][0]
       ) {
-        categoryNameList.push(filteredData[i][0]);
+        categoryNameList.push(formatDate(filteredData[i][0]));
         incomeValuesList.push(filteredData[i][2]);
         expenseValuesList.push(filteredData[i + 1][2]);
         i += 1;
       } else {
-        categoryNameList.push(filteredData[i][0]);
+        categoryNameList.push(formatDate(filteredData[i][0]));
         if (Number(filteredData[i][1]) == 2) {
           incomeValuesList.push("");
           expenseValuesList.push(filteredData[i][2]);
@@ -114,11 +124,11 @@ function checkDateSecondRange() {
       }
     }
 
-    generateRingChart();
+    createRingChart();
   }
 }
 
-function generateBarChart() {
+function createBarChart() {
   pieChartOptions = {
     tooltip: {
       trigger: "item",
@@ -155,10 +165,10 @@ function generateBarChart() {
     pieChartOptions.legend.data.push(categoryNameList[i]);
   }
 
-  barChart.setOption(pieChartOptions);
+  ringChartForIncome.setOption(pieChartOptions);
 }
 
-function generateRingChart() {
+function createRingChart() {
   BarChartOptions = {
     tooltip: {
       trigger: "axis",
@@ -185,5 +195,5 @@ function generateRingChart() {
       },
     ],
   };
-  ringChart.setOption(BarChartOptions);
+  financialComparisonChart.setOption(BarChartOptions);
 }

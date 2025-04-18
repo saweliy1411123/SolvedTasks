@@ -4,6 +4,8 @@ editExpenseButton.disabled = true;
 
 let incomeTableReadyCheck = false;
 let expenseTableReadyCheck = false;
+let incomeDataFromLocalStorage = "incomeTableRows";
+let expenseDataFromLocalStorage = "expenseTableRows";
 
 const incomeModalTittleCreate = "Добавление доходов";
 const expenseModalTittleCreate = "Добавление расходов";
@@ -18,12 +20,11 @@ const incomeGridOptions = {
     {
       field: "data",
       valueFormatter: (params) => {
-        if (!params.value) return "";
-        const d = new Date(params.value);
-        if (isNaN(d)) return params.value;
-        let day = String(d.getDate()).padStart(2, "0");
-        let month = String(d.getMonth() + 1).padStart(2, "0");
-        let year = d.getFullYear();
+        const date = new Date(params.value);
+        if (isNaN(date)) return params.value;
+        let day = String(date.getDate()).padStart(2, "0");
+        let month = String(date.getMonth() + 1).padStart(2, "0");
+        let year = date.getFullYear();
         return `${day}.${month}.${year}`;
       },
     },
@@ -86,23 +87,29 @@ agGrid.createGrid(expenseGrid, expenseGridOptions);
 localStorage.setItem("1", 1);
 
 if (
-  !localStorage.getItem("incomeTableRows") ||
-  !localStorage.getItem("expenseTableRows")
+  !localStorage.getItem(incomeDataFromLocalStorage) ||
+  !localStorage.getItem(expenseDataFromLocalStorage)
 ) {
-  localStorage.setItem("incomeTableRows", JSON.stringify([]));
-  localStorage.setItem("expenseTableRows", JSON.stringify([]));
+  localStorage.setItem(incomeDataFromLocalStorage, JSON.stringify([]));
+  localStorage.setItem(expenseDataFromLocalStorage, JSON.stringify([]));
+}
+
+function resetDatas() {
+  inputCategory.value = "";
+  inputSum.value = "";
+  inputDate.value = "";
 }
 
 function checkReadyTables() {
   if (incomeTableReadyCheck && expenseTableReadyCheck) {
-    loadLocalStorage();
+    loadDataFromLocalStorage();
   }
 }
-function loadLocalStorage() {
+function loadDataFromLocalStorage() {
   let incomeTableData =
-    JSON.parse(localStorage.getItem("incomeTableRows")) || [];
+    JSON.parse(localStorage.getItem(incomeDataFromLocalStorage)) || [];
   let expenseTableData =
-    JSON.parse(localStorage.getItem("expenseTableRows")) || [];
+    JSON.parse(localStorage.getItem(expenseDataFromLocalStorage)) || [];
   for (let i = 0; i < incomeTableData.length; i++) {
     incomeGridOptions.api.applyTransaction({ add: [incomeTableData[i]] });
   }
@@ -111,26 +118,22 @@ function loadLocalStorage() {
   }
 }
 
-function incomeResetCreateForm() {
+function resetIncomeAddForm() {
   incomeModalTittle.textContent = incomeModalTittleCreate;
-  inputCategory.value = "";
-  inputSum.value = "";
-  inputDate.value = "";
+  resetDatas();
 }
-function expenseResetCreateForm() {
+function resetExpenseAddForm() {
   incomeModalTittle.textContent = expenseModalTittleCreate;
-  inputCategory.value = "";
-  inputSum.value = "";
-  inputDate.value = "";
+  resetDatas();
 }
-function incomeResetEditForm() {
+function resetIncomeEditForm() {
   incomeModalTittle.textContent = incomeModalTittleEdit;
   const incomeSelectedData = incomeGridOptions.api.getSelectedRows();
   inputCategory.value = incomeSelectedData[0].category;
   inputSum.value = incomeSelectedData[0].sum;
   inputDate.value = incomeSelectedData[0].data;
 }
-function expenseResetEditForm() {
+function resetExpenseEditForm() {
   const selectedData2 = expenseGridOptions.api.getSelectedRows();
   incomeModalTittle.textContent = expenseModalTittleEdit;
   inputCategory.value = selectedData2[0].category;
@@ -139,8 +142,8 @@ function expenseResetEditForm() {
 }
 
 function saveModalButton() {
-  switch (true) {
-    case incomeModalTittle.textContent == incomeModalTittleCreate:
+  switch (incomeModalTittle.textContent) {
+    case incomeModalTittleCreate:
       const newRowIncome = {
         id: `${Math.round(Math.random(1) * 1000)}_${Math.round(
           Math.random(1) * 1000
@@ -153,18 +156,16 @@ function saveModalButton() {
         add: [newRowIncome],
       });
       let currentDataIncome = JSON.parse(
-        localStorage.getItem("incomeTableRows")
+        localStorage.getItem(incomeDataFromLocalStorage)
       );
       currentDataIncome.push(newRowIncome);
       localStorage.setItem(
-        "incomeTableRows",
+        incomeDataFromLocalStorage,
         JSON.stringify(currentDataIncome)
       );
-      inputCategory.value = "";
-      inputSum.value = "";
-      inputDate.value = "";
+      resetDatas();
       break;
-    case incomeModalTittle.textContent == expenseModalTittleCreate:
+    case expenseModalTittleCreate:
       const newRowExpenses = {
         id: `${Math.round(Math.random(1) * 1000)}_${Math.round(
           Math.random(1) * 1000
@@ -177,18 +178,16 @@ function saveModalButton() {
         add: [newRowExpenses],
       });
       let currentDataExpenses = JSON.parse(
-        localStorage.getItem("expenseTableRows")
+        localStorage.getItem(expenseDataFromLocalStorage)
       );
       currentDataExpenses.push(newRowExpenses);
       localStorage.setItem(
-        "expenseTableRows",
+        expenseDataFromLocalStorage,
         JSON.stringify(currentDataExpenses)
       );
-      inputCategory.value = "";
-      inputSum.value = "";
-      inputDate.value = "";
+      resetDatas();
       break;
-    case incomeModalTittle.textContent == incomeModalTittleEdit:
+    case incomeModalTittleEdit:
       const incomeSelectedData = incomeGridOptions.api.getSelectedRows();
       let allDataIncome = [];
       incomeSelectedData.forEach((row) => {
@@ -200,9 +199,12 @@ function saveModalButton() {
       incomeGridOptions.api.forEachNode((node) =>
         allDataIncome.push(node.data)
       );
-      localStorage.setItem("incomeTableRows", JSON.stringify(allDataIncome));
+      localStorage.setItem(
+        incomeDataFromLocalStorage,
+        JSON.stringify(allDataIncome)
+      );
       break;
-    case incomeModalTittle.textContent == expenseModalTittleEdit:
+    case expenseModalTittleEdit:
       const selectedData2 = expenseGridOptions.api.getSelectedRows();
       let allDataExpenses = [];
       selectedData2.forEach((row) => {
@@ -214,7 +216,10 @@ function saveModalButton() {
       expenseGridOptions.api.forEachNode((node) =>
         allDataExpenses.push(node.data)
       );
-      localStorage.setItem("expenseTableRows", JSON.stringify(allDataExpenses));
+      localStorage.setItem(
+        expenseDataFromLocalStorage,
+        JSON.stringify(allDataExpenses)
+      );
       break;
   }
 }
@@ -222,23 +227,30 @@ function saveModalButton() {
 function incomeDeleteButton() {
   const selectedData = incomeGridOptions.api.getSelectedRows();
   incomeGridOptions.api.applyTransaction({ remove: selectedData });
-  let incomeTableRows = JSON.parse(localStorage.getItem("incomeTableRows"));
+  let incomeTableRows = JSON.parse(
+    localStorage.getItem(incomeDataFromLocalStorage)
+  );
   const updatedData = incomeTableRows.filter(
     (item) => !selectedData.some((row) => row.id === item.id)
   );
 
-  localStorage.setItem("incomeTableRows", JSON.stringify(updatedData));
+  localStorage.setItem(incomeDataFromLocalStorage, JSON.stringify(updatedData));
 }
 
 function expenseDeleteButton() {
   const selectedData = expenseGridOptions.api.getSelectedRows();
   expenseGridOptions.api.applyTransaction({ remove: selectedData });
-  let expenseTableRows = JSON.parse(localStorage.getItem("expenseTableRows"));
+  let expenseTableRows = JSON.parse(
+    localStorage.getItem(expenseDataFromLocalStorage)
+  );
   const updatedData = expenseTableRows.filter(
     (item) => !selectedData.some((row) => row.id === item.id)
   );
 
-  localStorage.setItem("expenseTableRows", JSON.stringify(updatedData));
+  localStorage.setItem(
+    expenseDataFromLocalStorage,
+    JSON.stringify(updatedData)
+  );
 }
 
 let tablePartHTML = document.querySelector(".tablePartHTML");
