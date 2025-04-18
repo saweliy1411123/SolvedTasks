@@ -53,7 +53,6 @@ const expenseGridOptions = {
     {
       field: "data",
       valueFormatter: (params) => {
-        if (!params.value) return "";
         const d = new Date(params.value);
         if (isNaN(d)) return params.value;
         let day = String(d.getDate()).padStart(2, "0");
@@ -94,7 +93,7 @@ if (
   localStorage.setItem(expenseDataFromLocalStorage, JSON.stringify([]));
 }
 
-function resetDatas() {
+function resetInputData() {
   inputCategory.value = "";
   inputSum.value = "";
   inputDate.value = "";
@@ -118,22 +117,22 @@ function loadDataFromLocalStorage() {
   }
 }
 
-function resetIncomeAddForm() {
+function prepareIncomeAdd() {
   incomeModalTittle.textContent = incomeModalTittleCreate;
-  resetDatas();
+  resetInputData();
 }
-function resetExpenseAddForm() {
+function prepareExpenseAdd() {
   incomeModalTittle.textContent = expenseModalTittleCreate;
-  resetDatas();
+  resetInputData();
 }
-function resetIncomeEditForm() {
+function prepareIncomeEdit() {
   incomeModalTittle.textContent = incomeModalTittleEdit;
   const incomeSelectedData = incomeGridOptions.api.getSelectedRows();
   inputCategory.value = incomeSelectedData[0].category;
   inputSum.value = incomeSelectedData[0].sum;
   inputDate.value = incomeSelectedData[0].data;
 }
-function resetExpenseEditForm() {
+function prepareExpenseEdit() {
   const selectedData2 = expenseGridOptions.api.getSelectedRows();
   incomeModalTittle.textContent = expenseModalTittleEdit;
   inputCategory.value = selectedData2[0].category;
@@ -163,7 +162,7 @@ function saveModalButton() {
         incomeDataFromLocalStorage,
         JSON.stringify(currentDataIncome)
       );
-      resetDatas();
+      resetInputData();
       break;
     case expenseModalTittleCreate:
       const newRowExpenses = {
@@ -185,7 +184,7 @@ function saveModalButton() {
         expenseDataFromLocalStorage,
         JSON.stringify(currentDataExpenses)
       );
-      resetDatas();
+      resetInputData();
       break;
     case incomeModalTittleEdit:
       const incomeSelectedData = incomeGridOptions.api.getSelectedRows();

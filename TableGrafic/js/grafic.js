@@ -1,37 +1,37 @@
 const financialComparisonChart = echarts.init(
-  document.getElementById("barChart")
+  document.getElementById("financeComparisonChart")
 );
-const ringChartForIncome = echarts.init(document.getElementById("ringChart"));
+const incomeChart = echarts.init(document.getElementById("incomeChart"));
 let categoryNameList = [];
 let incomeValuesList = [];
 let expenseValuesList = [];
 let allDatesList = [];
 
 let totalIncomeSum = 0;
-let startRingChartDate = document.querySelectorAll(".dateElements")[0];
-let endRingChartDate = document.querySelectorAll(".dateElements")[1];
-let startBarChartDate = document.querySelectorAll(".dateElements")[2];
-let endBarChartDate = document.querySelectorAll(".dateElements")[3];
-let isStartDateForRingChart = false;
-let isEndDateForRingChart = false;
-let isStartDateForBarChart = false;
-let isEndDateForBarChart = false;
+let incomeRangeDateFrom = document.querySelectorAll(".dateElements")[0];
+let incomeRangeDateTo = document.querySelectorAll(".dateElements")[1];
+let financeRangeDateFrom = document.querySelectorAll(".dateElements")[2];
+let financeRangeDateTo = document.querySelectorAll(".dateElements")[3];
+let isIncomeDateFrom = false;
+let isIncomeDateTo = false;
+let isFinanceComparisonDateFrom = false;
+let isFinanceComparisonDateTo = false;
 
-function setStartDateForRingChart() {
-  isStartDateForRingChart = true;
-  checkDateForRing();
+function incomeChartDateFrom() {
+  isIncomeDateFrom = true;
+  checkDateForIncome();
 }
-function setEndDateForRingChart() {
-  isEndDateForRingChart = true;
-  checkDateForRing();
+function incomeChartDateTo() {
+  isIncomeDateTo = true;
+  checkDateForIncome();
 }
-function setStartDateForBarChart() {
-  isStartDateForBarChart = true;
-  checkDateForBar();
+function financeComparisonDateFrom() {
+  isFinanceComparisonDateFrom = true;
+  checkDateForfinanceComparison();
 }
-function setEndDateForBarChart() {
-  isEndDateForBarChart = true;
-  checkDateForBar();
+function financeComparisonDateTo() {
+  isFinanceComparisonDateTo = true;
+  checkDateForfinanceComparison();
 }
 
 function formatDate(date) {
@@ -42,8 +42,8 @@ function formatDate(date) {
   return `${day}.${month}.${year}`;
 }
 
-function checkDateForRing() {
-  if (isStartDateForRingChart && isEndDateForRingChart) {
+function checkDateForIncome() {
+  if (isIncomeDateFrom && isIncomeDateTo) {
     categoryNameList = [];
     incomeValuesList = [];
     allDatesList = [];
@@ -53,21 +53,22 @@ function checkDateForRing() {
     for (let i = 0; i < incomeTableData.length; i++) {
       allDatesList.push(incomeTableData[i].data);
     }
-    let start = startRingChartDate.value;
-    let end = endRingChartDate.value;
     for (let i = 0; i < incomeTableData.length; i++) {
-      if (allDatesList[i] >= start && allDatesList[i] <= end) {
+      if (
+        allDatesList[i] >= incomeRangeDateFrom.value &&
+        allDatesList[i] <= incomeRangeDateTo.value
+      ) {
         categoryNameList.push(incomeTableData[i].category);
         incomeValuesList.push(incomeTableData[i].sum);
         totalIncomeSum += +incomeTableData[i].sum;
       }
     }
-    createBarChart();
+    createFinanceChart();
   }
 }
 
-function checkDateForBar() {
-  if (isStartDateForBarChart && isEndDateForBarChart) {
+function checkDateForfinanceComparison() {
+  if (isFinanceComparisonDateFrom && isFinanceComparisonDateTo) {
     let incomeTableData =
       JSON.parse(localStorage.getItem("incomeTableRows")) || [];
     let expenseTableData =
@@ -95,11 +96,11 @@ function checkDateForBar() {
     }
     allDatesList.sort();
     let filteredData = [];
-    let start = startBarChartDate.value;
-    let end = endBarChartDate.value;
-
     for (let i = 0; i < allDatesList.length; i++) {
-      if (allDatesList[i][0] >= start && allDatesList[i][0] <= end) {
+      if (
+        allDatesList[i][0] >= financeRangeDateFrom.value &&
+        allDatesList[i][0] <= financeRangeDateTo.value
+      ) {
         filteredData.push(allDatesList[i]);
       }
     }
@@ -124,11 +125,11 @@ function checkDateForBar() {
       }
     }
 
-    createRingChart();
+    createincomeChart();
   }
 }
 
-function createBarChart() {
+function createFinanceChart() {
   pieChartOptions = {
     tooltip: {
       trigger: "item",
@@ -165,10 +166,10 @@ function createBarChart() {
     pieChartOptions.legend.data.push(categoryNameList[i]);
   }
 
-  ringChartForIncome.setOption(pieChartOptions);
+  incomeChart.setOption(pieChartOptions);
 }
 
-function createRingChart() {
+function createincomeChart() {
   BarChartOptions = {
     tooltip: {
       trigger: "axis",

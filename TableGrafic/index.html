@@ -14,13 +14,13 @@
   </div>
   <div class="d-grid gridColumns mt-2 mb-2">
       <div class="d-flex gap-3 m-3 justify-content-center">
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="resetIncomeAddForm()">Добавить</button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="resetIncomeEditForm()" id="editIncomeButton">Редактировать</button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="prepareIncomeAdd()">Добавить</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="prepareIncomeEdit()" id="editIncomeButton">Редактировать</button>
           <button class="btn btn-danger"  onclick="incomeDeleteButton()">Удалить</button>
       </div>
       <div class="d-flex gap-3 m-3 justify-content-center">
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="resetExpenseAddForm()">Добавить</button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="resetExpenseEditForm()" id="editExpenseButton">Редактировать</button>
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="prepareExpenseAdd()">Добавить</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addIncomeModal" onclick="prepareExpenseEdit()" id="editExpenseButton">Редактировать</button>
           <button class="btn btn-danger" onclick="expenseDeleteButton()">Удалить</button>
       </div>
   </div>
@@ -63,17 +63,17 @@
     <h1 class="d-flex justify-content-center mt-5 mb-2">Графики</h1>
     <div class="d-flex justify-content-around mb-3 mt-3">
       <div>
-        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="setStartDateForRingChart()">
-        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="setEndDateForRingChart()">
+        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="incomeChartDateFrom()">
+        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="incomeChartDateTo()">
       </div>
       <div>
-        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="setStartDateForBarChart()">
-        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="setEndDateForBarChart()">
+        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="financeComparisonDateFrom()">
+        <input class="dateElements mx-2 border border-2 border-dark p-2 rounded" type="date" onchange="financeComparisonDateTo()">
       </div>
     </div>
     <div class="d-flex justify-content-around mb-5">
-      <div id="ringChart" class="grafic d-flex justify-content-center"></div> 
-      <div id="barChart" class="grafic d-flex justify-content-center"></div> 
+      <div id="incomeChart" class="grafic d-flex justify-content-center"></div> 
+      <div id="financeComparisonChart" class="grafic d-flex justify-content-center"></div> 
     </div>
   </div>
     </body>
