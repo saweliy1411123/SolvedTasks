@@ -1,0 +1,9 @@
+<button 
+  type="button" 
+  [class]="'btn ' + buttonClass"
+  [attr.data-bs-toggle]="modalToggle ? 'modal' : null"
+  [attr.data-bs-target]="modalTarget"
+  [disabled]="isDisabled"
+  (click)="onClick()">
+  {{ buttonText }}
+</button>

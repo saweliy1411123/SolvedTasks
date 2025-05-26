@@ -1,0 +1,54 @@
+@font-face {
+  font-family: 'kinopoisk';
+  src: url('assets/font/graphiklcweb_medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: 'kinopoisk';
+  min-height: 1000px;
+
+  .myGrid {
+    min-height: 300px;
+    margin-inline: 5%;
+  }
+
+  .gridColumns {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .formLegend {
+    font-size: 15px;
+    padding: 0 0.5rem;
+    top: -0.7rem;
+    left: 1rem;
+  }
+
+  .grafic {
+    width: 600px;
+    height: 400px;
+  }
+  input[type='date'] {
+    position: relative;
+  
+    &::-webkit-calendar-picker-indicator {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: auto;
+      height: auto;
+      color: transparent;
+      background: transparent;
+    }
+  
+    &::-webkit-inner-spin-button,
+    &::-webkit-clear-button {
+      z-index: 1;
+    }
+  }
+
+}

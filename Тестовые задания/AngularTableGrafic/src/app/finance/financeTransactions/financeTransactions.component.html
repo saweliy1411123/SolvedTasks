@@ -1,0 +1,95 @@
+<button class="mt-4 mb-4 border border-2 border-dark rounded d-flex justify-content-center w-auto mx-auto p-2" [routerLink]="['/finance/analyticsCharts']">Переключиться</button>
+<div class="tablePartHTML">
+  <div class="gridColumns d-grid mt-2 mb-2">
+    <app-column-title title="Доходы"></app-column-title>
+    <app-column-title title="Расходы"></app-column-title>
+  </div>
+  <div class="d-grid gridColumns mt-2 mb-2">
+    <div class="d-flex gap-3 m-3 justify-content-center">
+      <app-button-control 
+        buttonText="Добавить"
+        buttonClass="btn-success"
+        modalTarget="#addIncomeModal"
+        [modalToggle]="true"
+        (buttonClick)="prepareIncomeAdd()">
+      </app-button-control>
+      <app-button-control 
+        buttonText="Редактировать"
+        buttonClass="btn-primary"
+        modalTarget="#addIncomeModal"
+        [modalToggle]="true"
+        [isDisabled]="true"
+        id="editIncomeButton"
+        (buttonClick)="prepareIncomeEdit()">
+      </app-button-control>
+      <app-button-control 
+        buttonText="Удалить"
+        buttonClass="btn-danger"
+        (buttonClick)="incomeDeleteButton()">
+      </app-button-control>
+    </div>
+    <div class="d-flex gap-3 m-3 justify-content-center">
+      <app-button-control 
+        buttonText="Добавить"
+        buttonClass="btn-success"
+        modalTarget="#addIncomeModal"
+        [modalToggle]="true"
+        (buttonClick)="prepareExpenseAdd()">
+      </app-button-control>
+      <app-button-control 
+        buttonText="Редактировать"
+        buttonClass="btn-primary"
+        modalTarget="#addIncomeModal"
+        [modalToggle]="true"
+        [isDisabled]="true"
+        id="editExpenseButton"
+        (buttonClick)="prepareExpenseEdit()">
+      </app-button-control>
+      <app-button-control 
+        buttonText="Удалить"
+        buttonClass="btn-danger"
+        (buttonClick)="expenseDeleteButton()">
+      </app-button-control>
+    </div>
+  </div>
+  <div class="modal fade" id="addIncomeModal" tabindex="-1" aria-labelledby="addIncomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="mb-2 d-flex justify-content-between mt-3 ms-3 me-3">
+          <h1 class="modal-title fs-4" id="incomeModalTittle">Добавление дохода</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addIncomeForm">
+            <app-form-field 
+              label="Категория" 
+              type="text" 
+              name="category" 
+              [(model)]="category">
+            </app-form-field>
+            <app-form-field 
+              label="Сумма" 
+              type="number" 
+              name="sum" 
+              [(model)]="sum">
+            </app-form-field>
+            <app-form-field 
+              label="Дата" 
+              type="date" 
+              name="date" 
+              [(model)]="date">
+            </app-form-field>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+          <button class="btn btn-primary" (click)="saveModalButton()" data-bs-dismiss="modal">Сохранить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gridColumns w-60 mx-auto d-grid gap-5" style="max-width: 1200px;">
+    <div class="ag-theme-alpine" #incomeGrid style="height: 500px; width: 100%; max-width: 600px; margin: 0 auto;"></div>
+    <div class="ag-theme-alpine" #expenseGrid style="height: 500px; width: 100%; max-width: 600px; margin: 0 auto;"></div>
+  </div>
+</div>

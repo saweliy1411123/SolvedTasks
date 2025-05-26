@@ -1,0 +1,10 @@
+<fieldset class="position-relative border border-2 border-dark rounded p-4 pb-3 pt-4 mb-4 bg-white">
+  <legend class="formLegend bg-white w-auto position-absolute">{{ label }}</legend>
+  <input 
+    [type]="type" 
+    class="border-0 bg-transparent w-100 fs-7" 
+    [name]="name" 
+    [value]="model"
+    (input)="onModelChange($event)"
+    required>
+</fieldset> 

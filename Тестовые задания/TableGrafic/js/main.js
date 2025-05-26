@@ -1,4 +1,4 @@
-let gridApi;
+//let gridApi;
 editIncomeButton.disabled = true;
 editExpenseButton.disabled = true;
 
