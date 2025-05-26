@@ -1,28 +1,30 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DateCheckerComponent } from './date-checker/date-checker.component';
-import { GraficCreateComponent } from './grafic-create/grafic-create.component';
+import { DataSelectorComponent } from './data-selector/data-selector.component';
+import { IncomeChartComponent } from './income-chart/income-chart.component';
+import { FinanceComparisonChartComponent } from './finance-comparison-chart/finance-comparison-chart.component';
+
 
 @Component({
   selector: 'app-analyticsCharts',
-  imports: [RouterLink, DateCheckerComponent, GraficCreateComponent],
+  imports: [RouterLink, DataSelectorComponent, IncomeChartComponent, FinanceComparisonChartComponent],
   templateUrl: './analyticsCharts.component.html',
   styleUrl: './analyticsCharts.component.scss'
 })
 export class AnalyticsChartsComponent {
-  incomeChartDateFrom() {
+  public incomeChartDateFrom(): void {
     console.log('Changed income chart start date');
   }
 
-  incomeChartDateTo() {
+  public incomeChartDateTo(): void {
     console.log('Changed income chart end date');
   }
 
-  financeComparisonDateFrom() {
+  public financeComparisonDateFrom(): void {
     console.log('Changed comparison start date');
   }
 
-  financeComparisonDateTo() {
+  public financeComparisonDateTo(): void {
     console.log('Changed comparison end date');
   }
 

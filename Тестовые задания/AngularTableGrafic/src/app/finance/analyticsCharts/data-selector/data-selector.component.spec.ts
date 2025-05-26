@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DateRangeComponent } from './date-range.component';
+import { DataSelectorComponent } from './data-selector.component';
 
-describe('DateRangeComponent', () => {
-  let component: DateRangeComponent;
-  let fixture: ComponentFixture<DateRangeComponent>;
+describe('DateCheckerComponent', () => {
+  let component: DataSelectorComponent;
+  let fixture: ComponentFixture<DataSelectorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DateRangeComponent]
+      imports: [DataSelectorComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DateRangeComponent);
+    fixture = TestBed.createComponent(DataSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,6 +1,9 @@
 <button class="mt-4 mb-4 border border-2 border-dark rounded d-flex justify-content-center w-auto mx-auto p-2" [routerLink]="['/finance/financeTransactions']">Переключиться</button>
 <div class="graficPartHTML" >
   <h1 class="d-flex justify-content-center mt-5 mb-2">Графики</h1>
-  <app-date-checker></app-date-checker>
+  <app-data-selector></app-data-selector>
 </div>
-<app-grafic-create></app-grafic-create>
+<div class="d-flex justify-content-around mb-5">
+  <app-income-chart></app-income-chart>
+  <app-finance-comparison-chart></app-finance-comparison-chart>
+</div>
