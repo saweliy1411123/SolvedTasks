@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,7 +11,9 @@ export class IncomeDateRangeComponent {
   public dateFrom: string = '';
   public dateTo: string = '';
 
+  @Output() dateRangeChange = new EventEmitter<{from: string, to: string}>();
+
   public onDateChange(): void {
-    console.log('Income date range changed:', this.dateFrom, this.dateTo);
+    this.dateRangeChange.emit({ from: this.dateFrom, to: this.dateTo });
   }
 } 

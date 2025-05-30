@@ -1,4 +1,4 @@
 <div class="d-flex gap-2 justify-content-around">
-  <app-income-date-range></app-income-date-range>
-  <app-finance-comparison-date-range></app-finance-comparison-date-range>
+  <app-income-date-range (dateRangeChange)="onIncomeDateRangeChange($event)"></app-income-date-range>
+  <app-finance-comparison-date-range (dateRangeChange)="onFinanceComparisonDateRangeChange($event)"></app-finance-comparison-date-range>
 </div>

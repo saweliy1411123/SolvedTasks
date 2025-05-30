@@ -1,4 +1,5 @@
 <div class="d-flex gap-2">
-  <input type="date"  class="dateElements mx-2 border border-2 border-dark p-2 rounded" [(ngModel)]="dateFrom" (change)="onDateChange()" />
-  <input type="date"  class="dateElements mx-2 border border-2 border-dark p-2 rounded" [(ngModel)]="dateTo" (change)="onDateChange()" />
-</div> 
+  <input type="date" #financeComparisonDateFrom class="dateElements mx-2 border border-2 border-dark p-2 rounded" [(ngModel)]="dateFrom" (change)="onDateChange()" />
+  <input type="date" #financeComparisonDateTo class="dateElements mx-2 border border-2 border-dark p-2 rounded" [(ngModel)]="dateTo" (change)="onDateChange()" />
+</div>
+

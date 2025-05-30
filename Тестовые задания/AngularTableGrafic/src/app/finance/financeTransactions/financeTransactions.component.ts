@@ -48,7 +48,6 @@ export class FinanceTransactionsComponent {
 
   saveModalButton() {
     if (!this.incomeApi || !this.expensApi) {
-      console.error('API не инициализированы');
       return;
     }
 

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-finance-comparison-date-range',
   standalone: true,
@@ -10,7 +11,9 @@ export class FinanceComparisonDateRangeComponent {
   public dateFrom: string = '';
   public dateTo: string = '';
 
+  @Output() dateRangeChange = new EventEmitter<{from: string, to: string}>();
+
   public onDateChange(): void {
-    console.log('Finance comparison date range changed:', this.dateFrom, this.dateTo);
+    this.dateRangeChange.emit({ from: this.dateFrom, to: this.dateTo });
   }
 } 
