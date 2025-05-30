@@ -7,8 +7,7 @@ import { FinanceComparisonDateRangeComponent } from './finance-comparison-date-r
   selector: 'app-data-selector',
   standalone: true,
   imports: [IncomeDateRangeComponent, FinanceComparisonDateRangeComponent, FormsModule],
-  templateUrl: './data-selector.component.html',
-  styleUrl: './data-selector.component.scss'
+  templateUrl: './data-selector.component.html'
 })
 export class DataSelectorComponent {
   public incomeDateFrom: string = '';
@@ -16,11 +15,4 @@ export class DataSelectorComponent {
   public comparisonDateFrom: string = '';
   public comparisonDateTo: string = '';
 
-  public onIncomeDateChange(): void {
-    console.log('Income date range changed:', this.incomeDateFrom, this.incomeDateTo);
-  }
-
-  public onComparisonDateChange(): void {
-    console.log('Finance comparison date range changed:', this.comparisonDateFrom, this.comparisonDateTo);
-  }
 }

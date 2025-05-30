@@ -4,6 +4,6 @@
   [attr.data-bs-toggle]="modalToggle ? 'modal' : null"
   [attr.data-bs-target]="modalTarget"
   [disabled]="isDisabled"
-  (click)="onClick()">
+  (click)="buttonText === 'Редактировать' ? (incomeApi ? prepareIncomeEdit() : prepareExpenseEdit()) : onClick()">
   {{ buttonText }}
 </button>

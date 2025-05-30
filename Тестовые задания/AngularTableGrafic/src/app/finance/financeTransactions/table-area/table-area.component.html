@@ -1,0 +1,14 @@
+<div  style="height: 500px; width: 100%;">
+  <ag-grid-angular
+    class="ag-theme-quartz"
+    [gridId]="gridId"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [rowData]="rowData"
+    [rowSelection]="'multiple'"
+    [getRowId]="getRowId"
+    (gridReady)="onGridReady($event)"
+    (selectionChanged)="onSelectionChanged()"
+    style="width: 100%; height: 100%;"
+  ></ag-grid-angular>
+</div>

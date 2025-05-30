@@ -10,11 +10,6 @@ body {
   font-family: 'kinopoisk';
   min-height: 1000px;
 
-  .myGrid {
-    min-height: 300px;
-    margin-inline: 5%;
-  }
-
   .gridColumns {
     grid-template-columns: 1fr 1fr;
   }
@@ -49,6 +44,10 @@ body {
     &::-webkit-clear-button {
       z-index: 1;
     }
+  }
+  .no-outline:focus {
+    outline: none !important;
+    box-shadow: none !important;
   }
 
 }
