@@ -1,0 +1,22 @@
+<div class="d-flex gap-3 m-3 justify-content-center">
+  <app-button-control 
+    buttonText="Добавить"
+    buttonClass="btn-success"
+    modalTarget="#addIncomeModal"
+    [modalToggle]="true"
+    (buttonClick)="onAddClick()">
+  </app-button-control>
+  <app-button-control 
+    buttonText="Редактировать"
+    buttonClass="btn-primary"
+    modalTarget="#addIncomeModal"
+    [modalToggle]="true"
+    [isDisabled]="isEditDisabled"
+    (buttonClick)="onEditClick()">
+  </app-button-control>
+  <app-button-control 
+    buttonText="Удалить"
+    buttonClass="btn-danger"
+    (buttonClick)="onDeleteClick()">
+  </app-button-control>
+</div> 

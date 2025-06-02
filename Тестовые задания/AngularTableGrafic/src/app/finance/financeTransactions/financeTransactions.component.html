@@ -1,60 +1,23 @@
-<button class="mt-4 mb-4 border border-2 border-dark rounded d-flex justify-content-center w-auto mx-auto p-2" [routerLink]="['/finance/analyticsCharts']">Переключиться</button>
 <div class="tablePartHTML">
   <div class="gridColumns d-grid mt-2 mb-2">
     <p class="d-flex justify-content-center fw-bold fs-1">Доходы</p>
     <p class="d-flex justify-content-center fw-bold fs-1">Расходы</p>
   </div>
   <div class="d-grid gridColumns mt-2 mb-2">
-    <div class="d-flex gap-3 m-3 justify-content-center">
-      <app-button-control 
-        buttonText="Добавить"
-        buttonClass="btn-success"
-        modalTarget="#addIncomeModal"
-        [modalToggle]="true"
-        (buttonClick)="prepareIncomeAdd()">
-      </app-button-control>
-      <app-button-control 
-        buttonText="Редактировать"
-        buttonClass="btn-primary"
-        modalTarget="#addIncomeModal"
-        [modalToggle]="true"
-        [isDisabled]="isIncomeEditDisabled"
-        #editIncomeButton
-        [incomeApi]="incomeApi"
-        (editData)="prepareIncomeEdit($event)">
-      </app-button-control>
-      <app-button-control 
-        buttonText="Удалить"
-        buttonClass="btn-danger"
-        [incomeApi]="incomeApi"
-        (buttonClick)="incomeDeleteButton()">
-      </app-button-control>
-    </div>
-    <div class="d-flex gap-3 m-3 justify-content-center">
-      <app-button-control 
-        buttonText="Добавить"
-        buttonClass="btn-success"
-        modalTarget="#addIncomeModal"
-        [modalToggle]="true"
-        (buttonClick)="prepareExpenseAdd()">
-      </app-button-control>
-      <app-button-control 
-        buttonText="Редактировать"
-        buttonClass="btn-primary"
-        modalTarget="#addIncomeModal"
-        [modalToggle]="true"
-        [isDisabled]="isExpenseEditDisabled"
-        #editExpenseButton
-        [expensApi]="expensApi"
-        (editData)="prepareExpenseEdit($event)">
-      </app-button-control>
-      <app-button-control 
-        buttonText="Удалить"
-        buttonClass="btn-danger"
-        [expensApi]="expensApi"
-        (buttonClick)="expenseDeleteButton()">
-      </app-button-control>
-    </div>
+    <app-table-controls 
+      [isEditDisabled]="isIncomeEditDisabled"
+      modalTarget="#addIncomeModal"
+      (addClick)="prepareAdd('incomeGrid')"
+      (editClick)="onEditClick('incomeGrid')"
+      (deleteClick)="onDeleteClick('incomeGrid')">
+    </app-table-controls>
+    <app-table-controls 
+      [isEditDisabled]="isExpenseEditDisabled"
+      modalTarget="#addIncomeModal"
+      (addClick)="prepareAdd('expenseGrid')"
+      (editClick)="onEditClick('expenseGrid')"
+      (deleteClick)="onDeleteClick('expenseGrid')">
+    </app-table-controls>
   </div>
   <div class="modal fade" id="addIncomeModal" tabindex="-1" aria-labelledby="addIncomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
@@ -96,7 +59,13 @@
     </div>
   </div>
   <div class="gridColumns w-60 mx-auto d-grid gap-5" style="max-width: 1200px;">
-    <app-table [gridId]="'incomeGrid'" [(isEditButtonDisabled)]="isIncomeEditDisabled" (apiReady)="incomeApi = $event"></app-table>
-    <app-table [gridId]="'expenseGrid'" [(isEditButtonDisabled)]="isExpenseEditDisabled" (apiReady)="expensApi = $event"></app-table>
+    <app-table-area [gridId]="'incomeGrid'" 
+                    [(isEditButtonDisabled)]="isIncomeEditDisabled" 
+                    [storageKey]="StorageKeys.IncomeTableRows" 
+                    (apiReady)="incomeApi = $event"></app-table-area>
+    <app-table-area [gridId]="'expenseGrid'" 
+                    [(isEditButtonDisabled)]="isExpenseEditDisabled" 
+                    [storageKey]="StorageKeys.ExpenseTableRows" 
+                    (apiReady)="expensApi = $event"></app-table-area>
   </div>
 </div>

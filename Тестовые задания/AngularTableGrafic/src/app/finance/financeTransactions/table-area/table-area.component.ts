@@ -1,62 +1,44 @@
-// @ts-nocheck
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { GridApi, GridReadyEvent, ColDef, GridOptions, ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { AgGridModule } from 'ag-grid-angular';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { TableRow } from '../../types/table-row.type';
+import { TABLE_COLUMN_DEFS } from './table-area.const';
+import { StorageKeys } from '../../types/storage-keys.enum';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface TableRow {
-  id: string;
-  category: string;
-  sum: string;
-  data: string;
-}
-
 @Component({
-  selector: 'app-table',
+  selector: 'app-table-area',
   standalone: true,
   imports: [AgGridModule],
   templateUrl: './table-area.component.html'
 })
-export class TableComponent implements OnInit, AfterViewInit {
-  @Input() gridId: string = '';
-  @Input() isEditButtonDisabled: boolean = true;
-  @Input() incomeApi?: GridApi;
-  @Input() expensApi?: GridApi;
-  @Output() isEditButtonDisabledChange = new EventEmitter<boolean>();
-  @Output() apiReady = new EventEmitter<GridApi>();
-  @ViewChild('grid') grid!: ElementRef;
+export class TableAreaComponent implements OnInit, AfterViewInit {
+  @Input() public gridId: string = '';
+  @Input() public isEditButtonDisabled: boolean = true;
+  @Input() public storageKey!: StorageKeys;
+  @Output() public isEditButtonDisabledChange = new EventEmitter<boolean>();
+  @Output() public apiReady = new EventEmitter<GridApi>();
+  @ViewChild('grid') public grid!: ElementRef;
 
   private gridApi: GridApi | undefined;
-  private tableReadyCheck: boolean = false;
-  public readonly incomeDataFromLocalStorage = "incomeTableRows";
-  public readonly expenseDataFromLocalStorage = "expenseTableRows";
 
-  columnDefs: ColDef[] = [
-    {
-      field: 'checkbox',
-      headerName: '',
-      checkboxSelection: true,
-      headerCheckboxSelection: true,
-      width: 50,
-      pinned: 'left'
-    },
-    { field: 'category', headerName: 'Category', sortable: true, filter: true },
-    { field: 'sum', headerName: 'Sum', sortable: true, filter: true },
-    { field: 'data', headerName: 'Data', sortable: true, filter: true }
-  ];
+  constructor(private localStorageService: LocalStorageService) { }
 
-  defaultColDef: ColDef = {
+  public columnDefs: ColDef<any, any>[] = TABLE_COLUMN_DEFS;
+
+  public defaultColDef: ColDef = {
     flex: 1,
     minWidth: 100,
     resizable: true,
   };
 
-  rowData: any[] = [];
+  public rowData: TableRow[] = [];
 
-  getRowId = (params: any) => params.data.id;
+  public getRowId = (params: { data: TableRow }) => params.data.id;
 
-  gridOptions: GridOptions = {
+  public gridOptions: GridOptions<TableRow> = {
     columnDefs: this.columnDefs,
     defaultColDef: this.defaultColDef,
     rowData: this.rowData,
@@ -66,45 +48,27 @@ export class TableComponent implements OnInit, AfterViewInit {
     onSelectionChanged: this.onSelectionChanged.bind(this),
   };
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.loadData();
   }
 
-  ngAfterViewInit() {
-    this.checkReadyTables();
+  public ngAfterViewInit(): void {
   }
 
-  onGridReady(params: GridReadyEvent) {
+  public onGridReady(params: GridReadyEvent): void {
     this.gridApi = params.api;
     this.apiReady.emit(params.api);
-    if (this.gridId === 'incomeGrid') {
-      this.incomeApi = params.api;
-    } else if (this.gridId === 'expenseGrid') {
-      this.expensApi = params.api;
-    }
   }
 
-  onSelectionChanged() {
+  public onSelectionChanged(): void {
     const selectedRows = this.gridApi?.getSelectedRows();
     this.isEditButtonDisabled = !selectedRows || selectedRows.length !== 1;
     this.isEditButtonDisabledChange.emit(this.isEditButtonDisabled);
   }
 
-  private loadData() {
-    const storageKey = this.gridId === 'incomeGrid' 
-      ? this.incomeDataFromLocalStorage 
-      : this.expenseDataFromLocalStorage;
-    
-    const data = JSON.parse(localStorage.getItem(storageKey) || '[]');
+  private loadData(): void {
+    const data = this.localStorageService.getItem<TableRow[]>(this.storageKey) || [];
     this.rowData = [...data];
-  }
-
-  private checkReadyTables() {
-    if (this.gridId === 'incomeGrid') {
-      this.tableReadyCheck = true;
-    } else if (this.gridId === 'expenseGrid') {
-      this.tableReadyCheck = true;
-    }
   }
 }
 
