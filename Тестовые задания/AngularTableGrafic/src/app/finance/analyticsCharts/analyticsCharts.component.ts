@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ChartContainerWithDateSelectorComponent } from './chart-container-with-date-selector/chart-container-with-date-selector.component';
+import { ChartContainerComponent } from './chart-container/chart-container.component';
 
 @Component({
   selector: 'app-analyticsCharts',
   imports: [
-    ChartContainerWithDateSelectorComponent,
+    ChartContainerComponent,
   ],
   templateUrl: './analyticsCharts.component.html'
 })

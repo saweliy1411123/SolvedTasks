@@ -11,10 +11,10 @@ export class FormFieldComponent {
   @Input() label: string = '';
   @Input() type: string = 'text';
   @Input() name: string = '';
-  @Input() model: any = '';
-  @Output() modelChange = new EventEmitter<any>();
+  @Input() public model: string = '';
+  @Output() public modelChange = new EventEmitter<string>();
 
-  onModelChange(event: Event) {
+  public onModelChange(event: Event) {
     const input = event.target as HTMLInputElement;
     this.model = input.value;
     this.modelChange.emit(this.model);

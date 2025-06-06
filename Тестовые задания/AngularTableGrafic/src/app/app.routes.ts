@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { FinanceComponent } from './finance/finance.component';
+import { importProvidersFrom } from '@angular/core';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 export const routes: Routes = [
   {
@@ -8,7 +10,8 @@ export const routes: Routes = [
     children: [
       {
         path: 'financeTransactions',
-        loadComponent: () => import('./finance/financeTransactions/financeTransactions.component').then(m => m.FinanceTransactionsComponent)
+        loadComponent: () => import('./finance/financeTransactions/financeTransactions.component').then(m => m.FinanceTransactionsComponent),
+        providers: [importProvidersFrom(ModalModule.forRoot())]
       },
       {
         path: 'analyticsCharts',

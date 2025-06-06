@@ -1,0 +1,9 @@
+<div class="d-flex flex-column align-items-center">
+  <app-date-range (dateRangeChange)="onDateRangeChange($event)"></app-date-range>
+  <div *ngIf="chartType === 'income'">
+    <app-income-chart [chartOptions]="incomeChartOptions"></app-income-chart>
+  </div>
+  <div *ngIf="chartType === 'financeComparison'">
+    <app-finance-comparison-chart [financeChartOptions]="financeChartOptions"></app-finance-comparison-chart>
+  </div>
+</div> 

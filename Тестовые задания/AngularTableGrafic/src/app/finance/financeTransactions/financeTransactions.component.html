@@ -19,53 +19,18 @@
       (deleteClick)="onDeleteClick('expenseGrid')">
     </app-table-controls>
   </div>
-  <div class="modal fade" id="addIncomeModal" tabindex="-1" aria-labelledby="addIncomeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="mb-2 d-flex justify-content-between mt-3 ms-3 me-3">
-          <h1 class="modal-title fs-4" id="incomeModalTittle">{{ modalTitle }}</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-        </div>
-        <div class="modal-body">
-          <form id="addIncomeForm">
-            <app-form-field 
-              label="Категория" 
-              type="text" 
-              name="category" 
-              #inputCategory
-              [(model)]="category">
-            </app-form-field>
-            <app-form-field 
-              label="Сумма" 
-              type="number" 
-              name="sum" 
-              #inputSum
-              [(model)]="sum">
-            </app-form-field>
-            <app-form-field 
-              label="Дата" 
-              type="date" 
-              name="date" 
-              #inputDate
-              [(model)]="date">
-            </app-form-field>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-          <button class="btn btn-primary" (click)="saveModalButton()" data-bs-dismiss="modal">Сохранить</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="gridColumns w-60 mx-auto d-grid gap-5" style="max-width: 1200px;">
-    <app-table-area [gridId]="'incomeGrid'" 
-                    [(isEditButtonDisabled)]="isIncomeEditDisabled" 
+  <div class="gridColumns w-60 mx-auto d-grid gap-5" >
+    <app-table-area #incomeTableArea
+                    [gridId]="'incomeGrid'" 
                     [storageKey]="StorageKeys.IncomeTableRows" 
-                    (apiReady)="incomeApi = $event"></app-table-area>
-    <app-table-area [gridId]="'expenseGrid'" 
-                    [(isEditButtonDisabled)]="isExpenseEditDisabled" 
+                    [rowData]="incomeRowData" 
+                    (selectionChanged)="onGridSelectionChanged('incomeGrid', $event)">
+    </app-table-area>
+    <app-table-area #expenseTableArea
+                    [gridId]="'expenseGrid'" 
                     [storageKey]="StorageKeys.ExpenseTableRows" 
-                    (apiReady)="expensApi = $event"></app-table-area>
+                    [rowData]="expenseRowData" 
+                    (selectionChanged)="onGridSelectionChanged('expenseGrid', $event)">
+    </app-table-area>
   </div>
 </div>

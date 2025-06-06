@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ title }}</h4>
+  <button type="button" class="btn-close pull-right" aria-label="Close" (click)="onCancel()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
+    <app-form-field 
+      label="Категория" 
+      type="text" 
+      name="category" 
+      [(model)]="category">
+    </app-form-field>
+    <app-form-field 
+      label="Сумма" 
+      type="number" 
+      name="sum" 
+      [(model)]="sum">
+    </app-form-field>
+    <app-form-field 
+      label="Дата" 
+      type="date" 
+      name="date" 
+      [(model)]="date">
+    </app-form-field>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="onCancel()">Отмена</button>
+  <button type="button" class="btn btn-primary" (click)="onSave()">Сохранить</button>
+</div> 

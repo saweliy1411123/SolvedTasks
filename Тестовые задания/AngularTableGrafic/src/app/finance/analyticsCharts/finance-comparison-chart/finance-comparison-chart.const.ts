@@ -1,6 +1,6 @@
 import type { EChartsOption } from 'echarts';
 
-export const BAR_CHART_OPTIONS: EChartsOption = {
+export const FINANCE_COMPARISON_CHART_OPTIONS: EChartsOption = {
   tooltip: {
     trigger: "axis",
   },

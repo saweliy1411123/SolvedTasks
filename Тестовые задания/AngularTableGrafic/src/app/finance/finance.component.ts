@@ -8,27 +8,19 @@ import { filter } from 'rxjs/operators';
   templateUrl: './finance.component.html'
 })
 export class FinanceComponent implements OnInit {
-  public buttonText: string = '';
-  public currentRouteLink: string[] = [];
+  public readonly buttonText: string = 'Переключиться';
+
+  get currentRouteLink(): string[] {
+    if (this.router.url.includes('/finance/analyticsCharts')) {
+      return ['/finance/financeTransactions'];
+    } else {
+      return ['/finance/analyticsCharts'];
+    }
+  }
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.updateButtonState();
-    });
-    this.updateButtonState();
-  }
-
-  private updateButtonState(): void {
-    if (this.router.url.includes('/finance/analyticsCharts')) {
-      this.buttonText = 'Переключиться';
-      this.currentRouteLink = ['/finance/financeTransactions'];
-    } else {
-      this.buttonText = 'Переключиться';
-      this.currentRouteLink = ['/finance/analyticsCharts'];
-    }
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {});
   }
 }

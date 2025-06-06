@@ -4,9 +4,14 @@ export interface ChartDataItem {
   category: string;
 }
 
+export enum TransactionType {
+  Income = 1,
+  Expense = 2,
+}
+
 export interface AllDatesListItem {
   date: string;
-  type: number;
+  type: TransactionType;
   sum: number;
   category: string;
 } 

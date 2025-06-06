@@ -1,6 +1,6 @@
 import type { EChartsOption } from 'echarts';
 
-export const PIE_CHART_OPTIONS: EChartsOption = {
+export const INCOME_CHART_OPTIONS: EChartsOption = {
   tooltip: {
     trigger: "item",
     formatter: "{b}: {c} руб. ({d}%)",

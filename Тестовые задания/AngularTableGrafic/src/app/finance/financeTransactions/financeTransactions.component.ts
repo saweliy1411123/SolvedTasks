@@ -1,34 +1,29 @@
-import { Component, ViewChild, ElementRef, Input } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { FormFieldComponent } from './form-field/form-field.component';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { TableAreaComponent } from './table-area/table-area.component';
 import { TableControlsComponent } from './table-controls/table-controls.component';
 import { GridApi } from 'ag-grid-community';
 import { LocalStorageService } from '../services/local-storage.service';
 import { TableRow } from '../types/table-row.type';
 import { StorageKeys } from '../types/storage-keys.enum';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { FinanceModalContentComponent } from '../financeModal/financeModalContent.component';
 
 @Component({
   selector: 'app-financeTransactions',
-  imports: [FormFieldComponent, FormsModule, TableAreaComponent, TableControlsComponent],
+  imports: [TableAreaComponent, TableControlsComponent],
   templateUrl: './financeTransactions.component.html'
 })
-export class FinanceTransactionsComponent {
-  @ViewChild('inputSum') inputSum!: ElementRef;
-  @ViewChild('inputDate') inputDate!: ElementRef;
+export class FinanceTransactionsComponent implements OnInit {
+  @ViewChild('incomeTableArea') incomeTableArea!: TableAreaComponent;
+  @ViewChild('expenseTableArea') expenseTableArea!: TableAreaComponent;
 
-  public incomeApi: GridApi | undefined;
-  public expensApi: GridApi | undefined;
   public isIncomeEditDisabled: boolean = true;
   public isExpenseEditDisabled: boolean = true;
 
-  category: string = '';
-  sum: string = '';
-  date: string = '';
-  isEditMode: boolean = false;
-  currentGridId: string = '';
-  public modalTitle: string = '';
-  editingRow: TableRow | null = null;
+  public incomeRowData: TableRow[] = [];
+  public expenseRowData: TableRow[] = [];
+
+  bsModalRef?: BsModalRef;
 
   readonly incomeModalTittleCreate = "Добавление доходов";
   readonly expenseModalTittleCreate = "Добавление расходов";
@@ -37,86 +32,89 @@ export class FinanceTransactionsComponent {
 
   public StorageKeys = StorageKeys;
 
-  constructor(private localStorageService: LocalStorageService) { }
+  constructor(private localStorageService: LocalStorageService,
+              private bsModalService: BsModalService) { }
 
-  saveModalButton() {
-    if (!this.incomeApi || !this.expensApi) {
-      return;
-    }
-
-    let currentApi: GridApi | undefined = undefined;
-    let storageKey: StorageKeys | undefined = undefined;
-
-    if (this.currentGridId === 'incomeGrid') {
-      currentApi = this.incomeApi;
-      storageKey = StorageKeys.IncomeTableRows;
-    } else if (this.currentGridId === 'expenseGrid') {
-      currentApi = this.expensApi;
-      storageKey = StorageKeys.ExpenseTableRows;
-    }
-
-    if (!currentApi || !storageKey) {
-      console.error('Не удалось определить API или ключ localStorage для сохранения данных');
-      return;
-    }
-
-    if (this.isEditMode && this.editingRow) {
-      this.editingRow.category = this.category;
-      this.editingRow.sum = this.sum;
-      this.editingRow.data = this.date;
-
-      currentApi.applyTransaction({ update: [this.editingRow] });
-
-    } else {
-      const newRow: TableRow = {
-        id: Date.now().toString(),
-        category: this.category,
-        sum: this.sum,
-        data: this.date
-      };
-      currentApi.applyTransaction({ add: [newRow] });
-    }
-
-    const allData: TableRow[] = [];
-    currentApi.forEachNode(node => allData.push(node.data));
-    this.localStorageService.setItem(storageKey, allData);
-
-    this.resetInputData();
+  ngOnInit(): void {
+    this.loadData();
   }
 
-  private resetInputData() {
-    this.category = '';
-    this.sum = '';
-    this.date = '';
-    this.isEditMode = false;
-    this.editingRow = null;
+  private loadData(): void {
+    this.incomeRowData = this.localStorageService.getItem<TableRow[]>(StorageKeys.IncomeTableRows) || [];
+    this.expenseRowData = this.localStorageService.getItem<TableRow[]>(StorageKeys.ExpenseTableRows) || [];
   }
 
   prepareAdd(gridType: 'incomeGrid' | 'expenseGrid') {
-    this.currentGridId = gridType;
-    this.isEditMode = false;
-    this.modalTitle = gridType === 'incomeGrid' ? this.incomeModalTittleCreate : this.expenseModalTittleCreate;
-    this.resetInputData();
+    const initialState = {
+      title: gridType === 'incomeGrid' ? this.incomeModalTittleCreate : this.expenseModalTittleCreate,
+    };
+    this.bsModalRef = this.bsModalService.show(FinanceModalContentComponent, { initialState });
+
+    this.bsModalRef.content.save.subscribe((newRow: TableRow) => {
+      let currentApi: GridApi | null = null;
+      let storageKey: StorageKeys | null = null;
+
+      if (gridType === 'incomeGrid') {
+        currentApi = this.incomeTableArea.gridApi;
+        storageKey = StorageKeys.IncomeTableRows;
+      } else if (gridType === 'expenseGrid') {
+        currentApi = this.expenseTableArea.gridApi;
+        storageKey = StorageKeys.ExpenseTableRows;
+      }
+
+      if (!currentApi || !storageKey) {
+        console.error('Не удалось определить API или ключ localStorage для сохранения данных');
+        return;
+      }
+
+      currentApi.applyTransaction({ add: [newRow] });
+
+      const allData: TableRow[] = [];
+      currentApi.forEachNode(node => allData.push(node.data));
+      this.localStorageService.setItem(storageKey, allData);
+    });
   }
 
   onEditClick(gridType: 'incomeGrid' | 'expenseGrid') {
-    const currentApi = gridType === 'incomeGrid' ? this.incomeApi : this.expensApi;
+    const currentApi = gridType === 'incomeGrid' ? this.incomeTableArea.gridApi : this.expenseTableArea.gridApi;
     const modalEditTitle = gridType === 'incomeGrid' ? this.incomeModalTittleEdit : this.expenseModalTittleEdit;
 
     const selectedData = currentApi?.getSelectedRows();
     if (selectedData && selectedData.length > 0) {
-      this.currentGridId = gridType;
-      this.isEditMode = true;
-      this.modalTitle = modalEditTitle;
-      this.editingRow = selectedData[0];
-      this.category = selectedData[0].category;
-      this.sum = selectedData[0].sum;
-      this.date = selectedData[0].data;
+      const initialState = {
+        title: modalEditTitle,
+        category: selectedData[0].category,
+        sum: selectedData[0].sum,
+        date: selectedData[0].data,
+        editingRow: selectedData[0]
+      };
+      this.bsModalRef = this.bsModalService.show(FinanceModalContentComponent, { initialState });
+
+      this.bsModalRef.content.save.subscribe((updatedRow: TableRow) => {
+        let storageKey: StorageKeys | null = null;
+
+        if (gridType === 'incomeGrid') {
+          storageKey = StorageKeys.IncomeTableRows;
+        } else if (gridType === 'expenseGrid') {
+          storageKey = StorageKeys.ExpenseTableRows;
+        }
+
+        if (!currentApi || !storageKey) {
+          console.error('Не удалось определить API или ключ localStorage для сохранения данных');
+          return;
+        }
+
+        currentApi.applyTransaction({ update: [updatedRow] });
+
+        const allData: TableRow[] = [];
+        currentApi.forEachNode(node => allData.push(node.data));
+        this.localStorageService.setItem(storageKey, allData);
+      });
     }
   }
 
   onDeleteClick(gridType: 'incomeGrid' | 'expenseGrid') {
-    const currentApi = gridType === 'incomeGrid' ? this.incomeApi : this.expensApi;
+    const currentApi = gridType === 'incomeGrid' ? this.incomeTableArea.gridApi : this.expenseTableArea.gridApi;
     const storageKey = gridType === 'incomeGrid' ? StorageKeys.IncomeTableRows : StorageKeys.ExpenseTableRows;
 
     if (!currentApi) return;
@@ -128,6 +126,14 @@ export class FinanceTransactionsComponent {
       const allData: TableRow[] = [];
       currentApi.forEachNode(node => allData.push(node.data));
       this.localStorageService.setItem(storageKey, allData);
+    }
+  }
+
+  onGridSelectionChanged(gridType: 'incomeGrid' | 'expenseGrid', selectedRows: TableRow[]): void {
+    if (gridType === 'incomeGrid') {
+      this.isIncomeEditDisabled = selectedRows.length !== 1;
+    } else if (gridType === 'expenseGrid') {
+      this.isExpenseEditDisabled = selectedRows.length !== 1;
     }
   }
 }
