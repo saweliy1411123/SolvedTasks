@@ -1,4 +1,5 @@
 import { ColDef } from 'ag-grid-community';
+import { formatDate } from '../../analyticsCharts/finance-comparison-chart/utils/format-date.utils';
 
 export const TABLE_COLUMN_DEFS: ColDef[] = [
   {
@@ -11,5 +12,11 @@ export const TABLE_COLUMN_DEFS: ColDef[] = [
   },
   { field: 'category', headerName: 'Category', sortable: true, filter: true },
   { field: 'sum', headerName: 'Sum', sortable: true, filter: true },
-  { field: 'data', headerName: 'Data', sortable: true, filter: true }
+  { 
+    field: 'data', 
+    headerName: 'Data', 
+    sortable: true, 
+    filter: true,
+    valueFormatter: (params) => formatDate(params.value)
+  }
 ]; 

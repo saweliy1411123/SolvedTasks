@@ -8,6 +8,4 @@ import { ChartContainerComponent } from './chart-container/chart-container.compo
   ],
   templateUrl: './analyticsCharts.component.html'
 })
-export class AnalyticsChartsComponent {
-
-}
+export class AnalyticsChartsComponent {}

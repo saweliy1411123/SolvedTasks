@@ -40,8 +40,8 @@ export class FinanceTransactionsComponent implements OnInit {
   }
 
   private loadData(): void {
-    this.incomeRowData = this.localStorageService.getItem<TableRow[]>(StorageKeys.IncomeTableRows) || [];
-    this.expenseRowData = this.localStorageService.getItem<TableRow[]>(StorageKeys.ExpenseTableRows) || [];
+    this.incomeRowData = this.localStorageService.getTableRows(StorageKeys.IncomeTableRows);
+    this.expenseRowData = this.localStorageService.getTableRows(StorageKeys.ExpenseTableRows);
   }
 
   prepareAdd(gridType: 'incomeGrid' | 'expenseGrid') {
@@ -71,7 +71,7 @@ export class FinanceTransactionsComponent implements OnInit {
 
       const allData: TableRow[] = [];
       currentApi.forEachNode(node => allData.push(node.data));
-      this.localStorageService.setItem(storageKey, allData);
+      this.localStorageService.setTableRows(storageKey, allData);
     });
   }
 
@@ -108,7 +108,7 @@ export class FinanceTransactionsComponent implements OnInit {
 
         const allData: TableRow[] = [];
         currentApi.forEachNode(node => allData.push(node.data));
-        this.localStorageService.setItem(storageKey, allData);
+        this.localStorageService.setTableRows(storageKey, allData);
       });
     }
   }
@@ -125,7 +125,7 @@ export class FinanceTransactionsComponent implements OnInit {
 
       const allData: TableRow[] = [];
       currentApi.forEachNode(node => allData.push(node.data));
-      this.localStorageService.setItem(storageKey, allData);
+      this.localStorageService.setTableRows(storageKey, allData);
     }
   }
 

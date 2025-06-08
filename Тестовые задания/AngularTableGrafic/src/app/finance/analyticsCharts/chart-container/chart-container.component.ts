@@ -5,7 +5,7 @@ import { FinanceComparisonChartComponent } from '../finance-comparison-chart/fin
 import { DateRange } from '../../types/date-range.type';
 import { NgIf } from '@angular/common';
 import { LocalStorageService } from '../../services/local-storage.service';
-import { ChartDataItem, AllDatesListItem } from '../../types/chart-data.type';
+import { ChartDataItem} from '../../types/chart-data.type';
 import { createIncomeChartOptions } from '../utils/income-chart-options.utils';
 import { createFinanceComparisonChartOptions } from '../utils/finance-comparison-chart-options.utils';
 import { formatDate } from '../finance-comparison-chart/utils/format-date.utils';
@@ -48,7 +48,7 @@ export class ChartContainerComponent implements OnInit {
   private generateChartOptions(): void {
     if (this.chartType === 'income') {
       const incomeTableData: ChartDataItem[] =
-        this.localStorageService.getItem<ChartDataItem[]>(this.localStorageService.INCOME_TABLE_ROWS_KEY) || [];
+        this.localStorageService.getChartData(this.localStorageService.INCOME_TABLE_ROWS_KEY);
       const filteredIncomeData: ChartDataItem[] = incomeTableData.filter((item: ChartDataItem) =>
         item.data >= this.dateRange.from && item.data <= this.dateRange.to
       );
@@ -65,9 +65,9 @@ export class ChartContainerComponent implements OnInit {
       this.incomeChartOptions = createIncomeChartOptions(categoryNameList, incomeValuesList, totalIncomeSum);
     } else if (this.chartType === 'financeComparison') {
       const incomeTableData: ChartDataItem[] =
-        this.localStorageService.getItem<ChartDataItem[]>(this.localStorageService.INCOME_TABLE_ROWS_KEY) || [];
+        this.localStorageService.getChartData(this.localStorageService.INCOME_TABLE_ROWS_KEY);
       const expenseTableData: ChartDataItem[] =
-        this.localStorageService.getItem<ChartDataItem[]>(this.localStorageService.EXPENSE_TABLE_ROWS_KEY) || [];
+        this.localStorageService.getChartData(this.localStorageService.EXPENSE_TABLE_ROWS_KEY);
 
       const { categoryNameList, incomeValuesList, expenseValuesList } = processChartData(
         incomeTableData,
